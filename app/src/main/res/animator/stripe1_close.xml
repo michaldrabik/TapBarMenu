@@ -8,6 +8,22 @@
     android:propertyName="pathData"
     android:valueType="pathType"
     app:vc_valueType="pathType"
-    android:valueFrom="M100,0 L500,400 L400,500 L0,100 z"
-    android:valueTo="M0,400 L500,400 L500,500 L0,500 z"
+    android:valueFrom="M100,0
+        L500,400
+        A50,50,0,0,0,500,400
+        A50,50,0,0,0,500,400
+        L400,500
+        L0,100
+        A50,50,0,0,0,0,100
+        A50,50,0,0,0,0,100
+        z"
+    android:valueTo="M50,400
+    L450,400
+    A50,50,0,0,1,500,450
+    A50,50,0,0,1,450,500
+    L400,500
+    L50,500
+    A50,50,0,0,1,0,450
+    A50,50,0,0,1,50,400
+    z"
     />

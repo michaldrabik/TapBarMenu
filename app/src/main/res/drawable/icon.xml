@@ -16,24 +16,72 @@
     <path
         android:name="stripe1"
         android:fillColor="@android:color/white"
-        android:pathData="M0,0 L500,0 L500,100 L0,100 z"
-        app:vc_pathData="M0,0 L500,0 L500,100 L0,100 z"
+        android:pathData="M50,0
+        L450,0
+        A50,50,0,0,1,500,50
+        A50,50,0,0,1,450,100
+        L400,100
+        L50,100
+        A50,50,0,0,1,0,50
+        A50,50,0,0,1,50,0
+        z"
+        app:vc_pathData="M50,0
+        L450,0
+        A50,50,0,0,1,500,50
+        A50,50,0,0,1,450,100
+        L400,100
+        L50,100
+        A50,50,0,0,1,0,50
+        A50,50,0,0,1,50,0
+        z"
         app:vc_fillColor="@android:color/white"
         />
 
     <path
         android:name="stripe2"
         android:fillColor="@android:color/white"
-        android:pathData="M0,200 L500,200 L500,300 L0,300 z"
-        app:vc_pathData="M0,200 L500,200 L500,300 L0,300 z"
+        android:pathData="M50,200
+        L450,200
+        A50,50,0,0,1,500,250
+        A50,50,0,0,1,450,300
+        L400,300
+        L50,300
+        A50,50,0,0,1,0,250
+        A50,50,0,0,1,50,200
+        z"
+        app:vc_pathData="M50,200
+        L450,200
+        A50,50,0,0,1,500,250
+        A50,50,0,0,1,450,300
+        L400,300
+        L50,300
+        A50,50,0,0,1,0,250
+        A50,50,0,0,1,50,200
+        z"
         app:vc_fillColor="@android:color/white"
         />
 
     <path
         android:name="stripe3"
         android:fillColor="@android:color/white"
-        android:pathData="M0,400 L500,400 L500,500 L0,500 z"
-        app:vc_pathData="M0,400 L500,400 L500,500 L0,500 z"
+        android:pathData="M50,400
+        L450,400
+        A50,50,0,0,1,500,450
+        A50,50,0,0,1,450,500
+        L400,500
+        L50,500
+        A50,50,0,0,1,0,450
+        A50,50,0,0,1,50,400
+        z"
+        app:vc_pathData="M50,400
+        L450,400
+        A50,50,0,0,1,500,450
+        A50,50,0,0,1,450,500
+        L400,500
+        L50,500
+        A50,50,0,0,1,0,450
+        A50,50,0,0,1,50,400
+        z"
         app:vc_fillColor="@android:color/white"
         />
   </group>
