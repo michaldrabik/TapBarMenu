@@ -166,8 +166,6 @@ public class TapBarMenu extends LinearLayout {
   @Override
   protected void onDraw(Canvas canvas) {
     canvas.drawPath(createRoundedRectPath(buttonLeft, 0, buttonRight, height, radius, radius, false), paint);
-    iconOpenDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
-    iconCloseDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
     if (state == State.CLOSED) {
       iconCloseDrawable.draw(canvas);
     } else {
@@ -187,6 +185,8 @@ public class TapBarMenu extends LinearLayout {
     iconTop = h / 3;
     iconRight = buttonRight - h / 3;
     iconBottom = h - h / 3;
+    iconOpenDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
+    iconCloseDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
   }
 
   private void setAnimatorsUpdateListeners() {
@@ -339,25 +339,4 @@ public class TapBarMenu extends LinearLayout {
       invalidate();
     }
   };
-
-  //@NonNull
-  //private ValueAnimator.AnimatorUpdateListener createAnimatorUpdateListener(final int type) {
-  //  return new ValueAnimator.AnimatorUpdateListener() {
-  //    @Override
-  //    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-  //      switch (type) {
-  //        case LEFT_ANIMATOR_ID:
-  //          buttonLeft = (float) valueAnimator.getAnimatedValue();
-  //          break;
-  //        case RIGHT_ANIMATOR_ID:
-  //          buttonRight = (float) valueAnimator.getAnimatedValue();
-  //          break;
-  //        case RADIUS_ANIMATOR_ID:
-  //          radius = (float) valueAnimator.getAnimatedValue();
-  //          break;
-  //      }
-  //      invalidate();
-  //    }
-  //  };
-  //}
 }
