@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -29,10 +30,6 @@ public class TapBarMenu extends LinearLayout {
 
   private static final int DURATION = 500;
   private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator(2.5f);
-
-  private static final int LEFT_ANIMATOR_ID = 0;
-  private static final int RIGHT_ANIMATOR_ID = 1;
-  private static final int RADIUS_ANIMATOR_ID = 2;
 
   private enum State {
     OPENED,
@@ -193,9 +190,9 @@ public class TapBarMenu extends LinearLayout {
   }
 
   private void setAnimatorsUpdateListeners() {
-    leftAnimator.addUpdateListener(createAnimatorUpdateListener(LEFT_ANIMATOR_ID));
-    rightAnimator.addUpdateListener(createAnimatorUpdateListener(RIGHT_ANIMATOR_ID));
-    radiusAnimator.addUpdateListener(createAnimatorUpdateListener(RADIUS_ANIMATOR_ID));
+    leftAnimator.addUpdateListener(leftAnimatorUpdateListener);
+    rightAnimator.addUpdateListener(rightAnimatorUpdateListener);
+    radiusAnimator.addUpdateListener(radiusAnimatorUpdateListener);
   }
 
   private void showIcons(final boolean show) {
@@ -233,6 +230,7 @@ public class TapBarMenu extends LinearLayout {
     }
   }
 
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   private Path createRoundedRectPathApi21(float left, float top, float right, float bottom, float rx, float ry, boolean conformToOriginalPost) {
     Path path = new Path();
     if (rx < 0) rx = 0;
@@ -307,34 +305,59 @@ public class TapBarMenu extends LinearLayout {
     super.onDetachedFromWindow();
   }
 
-  public void onDestroy() {
+  private void onDestroy() {
     iconOpenDrawable = null;
     iconCloseDrawable = null;
     leftAnimator = null;
     rightAnimator = null;
     radiusAnimator = null;
     animatorSet = null;
+    leftAnimatorUpdateListener = null;
+    rightAnimatorUpdateListener = null;
+    radiusAnimatorUpdateListener = null;
     onClickListener = null;
   }
 
-  @NonNull
-  private ValueAnimator.AnimatorUpdateListener createAnimatorUpdateListener(final int type) {
-    return new ValueAnimator.AnimatorUpdateListener() {
-      @Override
-      public void onAnimationUpdate(ValueAnimator valueAnimator) {
-        switch (type) {
-          case LEFT_ANIMATOR_ID:
-            buttonLeft = (float) valueAnimator.getAnimatedValue();
-            break;
-          case RIGHT_ANIMATOR_ID:
-            buttonRight = (float) valueAnimator.getAnimatedValue();
-            break;
-          case RADIUS_ANIMATOR_ID:
-            radius = (float) valueAnimator.getAnimatedValue();
-            break;
-        }
-        invalidate();
-      }
-    };
-  }
+  private ValueAnimator.AnimatorUpdateListener leftAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
+    @Override
+    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+      buttonLeft = (float) valueAnimator.getAnimatedValue();
+    }
+  };
+
+  private ValueAnimator.AnimatorUpdateListener rightAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
+    @Override
+    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+      buttonRight = (float) valueAnimator.getAnimatedValue();
+    }
+  };
+
+  private ValueAnimator.AnimatorUpdateListener radiusAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
+    @Override
+    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+      radius = (float) valueAnimator.getAnimatedValue();
+      invalidate();
+    }
+  };
+
+  //@NonNull
+  //private ValueAnimator.AnimatorUpdateListener createAnimatorUpdateListener(final int type) {
+  //  return new ValueAnimator.AnimatorUpdateListener() {
+  //    @Override
+  //    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+  //      switch (type) {
+  //        case LEFT_ANIMATOR_ID:
+  //          buttonLeft = (float) valueAnimator.getAnimatedValue();
+  //          break;
+  //        case RIGHT_ANIMATOR_ID:
+  //          buttonRight = (float) valueAnimator.getAnimatedValue();
+  //          break;
+  //        case RADIUS_ANIMATOR_ID:
+  //          radius = (float) valueAnimator.getAnimatedValue();
+  //          break;
+  //      }
+  //      invalidate();
+  //    }
+  //  };
+  //}
 }
