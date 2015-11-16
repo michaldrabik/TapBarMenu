@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/icon"
+    >
+
+  <target
+      android:animation="@animator/stripe1_close"
+      android:name="stripe1"
+      />
+
+  <target
+      android:animation="@animator/stripe2_close"
+      android:name="stripe2"
+      />
+
+  <target
+      android:animation="@animator/stripe3_close"
+      android:name="stripe3"
+      />
+
+  <target
+      android:animation="@animator/rotation"
+      android:name="icon"
+      />
+
+</animated-vector>
