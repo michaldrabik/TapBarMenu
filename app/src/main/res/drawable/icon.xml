@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:viewportWidth="500"
     android:viewportHeight="500"
     android:width="500px"
     android:height="500px"
+    app:vc_viewportHeight="500"
+    app:vc_viewportWidth="500"
     >
-  <group android:name="icon"
+  <group
+      android:name="icon"
       android:pivotX="250"
       android:pivotY="250"
       >
@@ -13,18 +17,24 @@
         android:name="stripe1"
         android:fillColor="@android:color/white"
         android:pathData="M0,0 L500,0 L500,100 L0,100 z"
+        app:vc_pathData="M0,0 L500,0 L500,100 L0,100 z"
+        app:vc_fillColor="@android:color/white"
         />
 
     <path
         android:name="stripe2"
         android:fillColor="@android:color/white"
         android:pathData="M0,200 L500,200 L500,300 L0,300 z"
+        app:vc_pathData="M0,200 L500,200 L500,300 L0,300 z"
+        app:vc_fillColor="@android:color/white"
         />
 
     <path
         android:name="stripe3"
         android:fillColor="@android:color/white"
         android:pathData="M0,400 L500,400 L500,500 L0,500 z"
+        app:vc_pathData="M0,400 L500,400 L500,500 L0,500 z"
+        app:vc_fillColor="@android:color/white"
         />
   </group>
 </vector>

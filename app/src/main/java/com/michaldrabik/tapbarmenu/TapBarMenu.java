@@ -7,7 +7,10 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.Path;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -17,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
+import com.wnafee.vector.compat.ResourcesCompat;
 
 /**
  * @author Michal Drabik (michal.drabik0@gmail.com) on 2015-11-13.
@@ -54,8 +58,8 @@ public class TapBarMenu extends LinearLayout {
   private float iconBottom;
   private float yPosition;
   private OnClickListener onClickListener;
-
-  private AnimatedVectorDrawable iconDrawable;
+  private Drawable iconOpenDrawable;
+  private Drawable iconCloseDrawable;
 
   public TapBarMenu(Context context) {
     super(context);
@@ -76,11 +80,9 @@ public class TapBarMenu extends LinearLayout {
     setWillNotDraw(false);
     setGravity(Gravity.CENTER);
     setupAnimators();
-    paint = new Paint();
-    paint.setColor(0xFFE55452);
-    paint.setAntiAlias(true);
-    paint.setShadowLayer(4, 2, 2, ContextCompat.getColor(getContext(), R.color.dark_gray));
-    iconDrawable = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.icon_animated, null);
+    setupPaint();
+    iconOpenDrawable = ResourcesCompat.getDrawable(getContext().getApplicationContext(), R.drawable.icon_animated);
+    iconCloseDrawable = ResourcesCompat.getDrawable(getContext().getApplicationContext(), R.drawable.icon_close_animated);
   }
 
   private void setupAnimators() {
@@ -96,6 +98,12 @@ public class TapBarMenu extends LinearLayout {
     for (int i = 0; i < getChildCount(); i++) {
       getChildAt(i).setVisibility(GONE);
     }
+  }
+
+  private void setupPaint() {
+    paint = new Paint();
+    paint.setColor(0xFFE55452);
+    paint.setAntiAlias(true);
   }
 
   public void setTapBarMenuBackgroundColor(int colorResId) {
@@ -120,8 +128,7 @@ public class TapBarMenu extends LinearLayout {
 
     animatorSet.playTogether(radiusAnimator, leftAnimator, rightAnimator);
     animatorSet.start();
-    iconDrawable = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.icon_animated, null);
-    iconDrawable.start();
+    ((Animatable) iconOpenDrawable).start();
     ViewGroup parentView = (ViewGroup) TapBarMenu.this.getParent();
     this.animate().y(parentView.getBottom() - height).setDuration(DURATION).setInterpolator(DECELERATE_INTERPOLATOR).start();
   }
@@ -138,8 +145,7 @@ public class TapBarMenu extends LinearLayout {
     animatorSet.playTogether(radiusAnimator, leftAnimator, rightAnimator);
     animatorSet.removeAllListeners();
     animatorSet.start();
-    iconDrawable = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.icon_close_animated, null);
-    iconDrawable.start();
+    ((Animatable) iconCloseDrawable).start();
     this.animate().y(yPosition).setDuration(DURATION).setInterpolator(DECELERATE_INTERPOLATOR).start();
   }
 
@@ -147,28 +153,36 @@ public class TapBarMenu extends LinearLayout {
     return state == State.OPENED;
   }
 
-  @Override public void setOnClickListener(OnClickListener listener) {
+  @Override
+  public void setOnClickListener(OnClickListener listener) {
     onClickListener = listener;
   }
 
-  @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+  @Override
+  protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
-    yPosition = getY();
     updateDimensions(w, h);
     setupMenuItems();
+    yPosition = getY();
   }
 
-  @Override protected void onDraw(Canvas canvas) {
-    canvas.drawRoundRect(buttonLeft, 0, buttonRight, height, radius, radius, paint);
-    iconDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
-    iconDrawable.draw(canvas);
+  @Override
+  protected void onDraw(Canvas canvas) {
+    canvas.drawPath(createRoundedRectPath(buttonLeft, 0, buttonRight, height, radius, radius, false), paint);
+    iconOpenDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
+    iconCloseDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
+    if (state == State.CLOSED) {
+      iconCloseDrawable.draw(canvas);
+    } else {
+      iconOpenDrawable.draw(canvas);
+    }
   }
 
   private void updateDimensions(float w, float h) {
     width = w;
     height = h;
     radius = h;
-    buttonLeft = ((w / 2) - (h / 2)) + getPaddingLeft();
+    buttonLeft = ((w / 2) - (h / 2)) + getPaddingLeft() - getPaddingRight();
     buttonRight = buttonLeft + h;
     buttonLeftInitial = buttonLeft;
     buttonRightInitial = buttonRight;
@@ -201,7 +215,8 @@ public class TapBarMenu extends LinearLayout {
           .setDuration(show ? DURATION / 2 : DURATION / 3)
           .setStartDelay(show ? DURATION / 4 : 0)
           .setListener(new AnimatorListenerAdapter() {
-            @Override public void onAnimationEnd(Animator animation) {
+            @Override
+            public void onAnimationEnd(Animator animation) {
               super.onAnimationEnd(animation);
               view.setVisibility(show ? VISIBLE : GONE);
             }
@@ -210,7 +225,74 @@ public class TapBarMenu extends LinearLayout {
     }
   }
 
-  @Override public boolean onTouchEvent(MotionEvent event) {
+  private Path createRoundedRectPath(float left, float top, float right, float bottom, float rx, float ry, boolean conformToOriginalPost) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      return createRoundedRectPathApi21(left, top, right, bottom, rx, ry, conformToOriginalPost);
+    } else {
+      return createRoundedRectPathPreApi21(left, top, right, bottom, rx, ry, conformToOriginalPost);
+    }
+  }
+
+  private Path createRoundedRectPathApi21(float left, float top, float right, float bottom, float rx, float ry, boolean conformToOriginalPost) {
+    Path path = new Path();
+    if (rx < 0) rx = 0;
+    if (ry < 0) ry = 0;
+    float width = right - left;
+    float height = bottom - top;
+    if (rx > width / 2) rx = width / 2;
+    if (ry > height / 2) ry = height / 2;
+    float widthMinusCorners = (width - (2 * rx));
+    float heightMinusCorners = (height - (2 * ry));
+    path.moveTo(right, top + ry);
+    path.arcTo(right - 2 * rx, top, right, top + 2 * ry, 0, -90, false);
+    path.rLineTo(-widthMinusCorners, 0);
+    path.arcTo(left, top, left + 2 * rx, top + 2 * ry, 270, -90, false);
+    path.rLineTo(0, heightMinusCorners);
+    if (conformToOriginalPost) {
+      path.rLineTo(0, ry);
+      path.rLineTo(width, 0);
+      path.rLineTo(0, -ry);
+    } else {
+      path.arcTo(left, bottom - 2 * ry, left + 2 * rx, bottom, 180, -90, false);
+      path.rLineTo(widthMinusCorners, 0);
+      path.arcTo(right - 2 * rx, bottom - 2 * ry, right, bottom, 90, -90, false);
+    }
+    path.rLineTo(0, -heightMinusCorners);
+    path.close();
+    return path;
+  }
+
+  private Path createRoundedRectPathPreApi21(float left, float top, float right, float bottom, float rx, float ry, boolean conformToOriginalPost) {
+    Path path = new Path();
+    if (rx < 0) rx = 0;
+    if (ry < 0) ry = 0;
+    float width = right - left;
+    float height = bottom - top;
+    if (rx > width / 2) rx = width / 2;
+    if (ry > height / 2) ry = height / 2;
+    float widthMinusCorners = (width - (2 * rx));
+    float heightMinusCorners = (height - (2 * ry));
+    path.moveTo(right, top + ry);
+    path.rQuadTo(0, -ry, -rx, -ry);
+    path.rLineTo(-widthMinusCorners, 0);
+    path.rQuadTo(-rx, 0, -rx, ry);
+    path.rLineTo(0, heightMinusCorners);
+    if (conformToOriginalPost) {
+      path.rLineTo(0, ry);
+      path.rLineTo(width, 0);
+      path.rLineTo(0, -ry);
+    } else {
+      path.rQuadTo(0, ry, rx, ry);
+      path.rLineTo(widthMinusCorners, 0);
+      path.rQuadTo(rx, 0, rx, -ry);
+    }
+    path.rLineTo(0, -heightMinusCorners);
+    path.close();
+    return path;
+  }
+
+  @Override
+  public boolean onTouchEvent(@NonNull MotionEvent event) {
     if ((event.getX() > buttonLeftInitial && event.getX() < buttonRightInitial) && (event.getAction() == MotionEvent.ACTION_UP)) {
       if (onClickListener != null) {
         onClickListener.onClick(this);
@@ -219,22 +301,27 @@ public class TapBarMenu extends LinearLayout {
     return true;
   }
 
-  @Override protected void onDetachedFromWindow() {
+  @Override
+  protected void onDetachedFromWindow() {
     onDestroy();
     super.onDetachedFromWindow();
   }
 
-  private void onDestroy() {
-    iconDrawable = null;
+  public void onDestroy() {
+    iconOpenDrawable = null;
+    iconCloseDrawable = null;
     leftAnimator = null;
     rightAnimator = null;
     radiusAnimator = null;
+    animatorSet = null;
     onClickListener = null;
   }
 
-  @NonNull private ValueAnimator.AnimatorUpdateListener createAnimatorUpdateListener(final int type) {
+  @NonNull
+  private ValueAnimator.AnimatorUpdateListener createAnimatorUpdateListener(final int type) {
     return new ValueAnimator.AnimatorUpdateListener() {
-      @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
+      @Override
+      public void onAnimationUpdate(ValueAnimator valueAnimator) {
         switch (type) {
           case LEFT_ANIMATOR_ID:
             buttonLeft = (float) valueAnimator.getAnimatedValue();
