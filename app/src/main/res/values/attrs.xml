@@ -4,6 +4,7 @@
   <declare-styleable name="TapBarMenu">
 
     <attr name="tbm_backgroundColor" format="color" />
+    <attr name="tbm_buttonSize" format="dimension" />
     <attr name="tbm_buttonPaddingRight" format="dimension" />
     <attr name="tbm_buttonPaddingLeft" format="dimension" />
     <attr name="tbm_buttonOpenPosition">

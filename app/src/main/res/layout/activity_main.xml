@@ -17,12 +17,11 @@
     <com.michaldrabik.tapbarmenu.TapBarMenu
         android:id="@+id/tapBarMenu"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="56dp"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="18dp"
-        app:tbm_backgroundColor="@color/red"
-        app:tbm_buttonOpenPosition="right"
-        app:tbm_buttonPaddingRight="18dp"
+        android:layout_marginBottom="24dp"
+        app:tbm_backgroundColor="@color/blue"
+        app:tbm_buttonOpenPosition="center"
         >
 
       <ImageView
@@ -30,8 +29,8 @@
           android:layout_width="0dp"
           android:layout_height="match_parent"
           android:layout_weight="1"
-          android:paddingTop="12dp"
-          android:paddingBottom="12dp"
+          android:paddingTop="10dp"
+          android:paddingBottom="10dp"
           android:src="@drawable/ic_person"
           tools:visibility="visible"
           />
@@ -41,9 +40,15 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:paddingTop="12dp"
-          android:paddingBottom="12dp"
+          android:paddingTop="10dp"
+          android:paddingBottom="10dp"
           android:src="@drawable/ic_location"
+          />
+
+      <Space
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
           />
 
       <ImageView
@@ -51,8 +56,8 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:paddingTop="12dp"
-          android:paddingBottom="12dp"
+          android:paddingTop="10dp"
+          android:paddingBottom="10dp"
           android:src="@drawable/ic_thumb_up"
           />
 
@@ -61,15 +66,9 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:paddingTop="12dp"
-          android:paddingBottom="12dp"
+          android:paddingTop="10dp"
+          android:paddingBottom="10dp"
           android:src="@drawable/ic_thumb_down"
-          />
-
-      <Space
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
           />
 
     </com.michaldrabik.tapbarmenu.TapBarMenu>
