@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
   <declare-styleable name="TapBarMenu">
-
     <attr name="tbm_backgroundColor" format="color" />
     <attr name="tbm_buttonSize" format="dimension" />
     <attr name="tbm_buttonMarginRight" format="dimension" />
@@ -14,5 +12,4 @@
     </attr>
     <attr name="tbm_showItems" format="boolean" />
   </declare-styleable>
-
 </resources>
