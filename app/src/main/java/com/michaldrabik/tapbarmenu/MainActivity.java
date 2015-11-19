@@ -7,6 +7,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.michaldrabik.tapbarmenulib.TapBarMenu;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
   }
 
   @Override protected void onDestroy() {
-    ButterKnife.unbind(this);
     super.onDestroy();
   }
 }

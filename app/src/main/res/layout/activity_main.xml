@@ -14,13 +14,13 @@
       android:layout_height="match_parent"
       >
 
-    <com.michaldrabik.tapbarmenu.TapBarMenu
+    <com.michaldrabik.tapbarmenulib.TapBarMenu
         android:id="@+id/tapBarMenu"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
         android:layout_marginBottom="24dp"
-        app:tbm_backgroundColor="@color/blue"
+        app:tbm_backgroundColor="@color/red"
         >
 
       <ImageView
@@ -70,7 +70,7 @@
           android:src="@drawable/ic_thumb_down"
           />
 
-    </com.michaldrabik.tapbarmenu.TapBarMenu>
+    </com.michaldrabik.tapbarmenulib.TapBarMenu>
 
     <TextView
         android:id="@+id/label"

@@ -1,4 +1,4 @@
-package com.michaldrabik.tapbarmenu;
+package com.michaldrabik.tapbarmenulib;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -88,8 +88,8 @@ public class TapBarMenu extends LinearLayout {
     setGravity(Gravity.CENTER);
     setupAnimators();
     setupPaint();
-    iconOpenDrawable = ResourcesCompat.getDrawable(getContext().getApplicationContext(), R.drawable.icon_animated);
-    iconCloseDrawable = ResourcesCompat.getDrawable(getContext().getApplicationContext(), R.drawable.icon_close_animated);
+    iconOpenDrawable = ResourcesCompat.getDrawable(getContext(), R.drawable.icon_animated);
+    iconCloseDrawable = ResourcesCompat.getDrawable(getContext(), R.drawable.icon_close_animated);
   }
 
   private void setupAttributes(AttributeSet attrs) {
