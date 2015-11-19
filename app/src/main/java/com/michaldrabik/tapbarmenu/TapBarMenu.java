@@ -31,11 +31,11 @@ import com.wnafee.vector.compat.ResourcesCompat;
  */
 public class TapBarMenu extends LinearLayout {
 
+  public static final int BUTTON_POSITION_LEFT = 0;
+  public static final int BUTTON_POSITION_CENTER = 1;
+  public static final int BUTTON_POSITION_RIGHT = 2;
   private static final int ANIMATION_DURATION = 500;
   private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator(2.5f);
-  private static final int BUTTON_POSITION_LEFT = 0;
-  private static final int BUTTON_POSITION_CENTER = 1;
-  private static final int BUTTON_POSITION_RIGHT = 2;
 
   private enum State {
     OPENED,
@@ -59,10 +59,6 @@ public class TapBarMenu extends LinearLayout {
   private float buttonLeftInitial;
   private float buttonRightInitial;
   private float radius;
-  private float iconLeft;
-  private float iconRight;
-  private float iconTop;
-  private float iconBottom;
   private float yPosition;
   private OnClickListener onClickListener;
   private Drawable iconOpenDrawable;
@@ -71,9 +67,9 @@ public class TapBarMenu extends LinearLayout {
   //Custom XML Attributes
   private int backgroundColor;
   private int buttonSize;
-  private int buttonOpenPosition;
-  private int buttonPaddingRight;
-  private int buttonPaddingLeft;
+  private int buttonPosition;
+  private int buttonMarginRight;
+  private int buttonMarginLeft;
   private boolean showMenuItems;
 
   public TapBarMenu(Context context, AttributeSet attrs) {
@@ -99,10 +95,11 @@ public class TapBarMenu extends LinearLayout {
   private void setupAttributes(AttributeSet attrs) {
     TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.TapBarMenu, 0, 0);
     backgroundColor = typedArray.getColor(R.styleable.TapBarMenu_tbm_backgroundColor, ContextCompat.getColor(getContext(), R.color.red));
-    buttonSize = typedArray.getDimensionPixelSize(R.styleable.TapBarMenu_tbm_buttonSize, getResources().getDimensionPixelSize(R.dimen.defaultButtonSize));
-    buttonPaddingRight = typedArray.getDimensionPixelSize(R.styleable.TapBarMenu_tbm_buttonMarginRight, 0);
-    buttonPaddingLeft = typedArray.getDimensionPixelSize(R.styleable.TapBarMenu_tbm_buttonMarginLeft, 0);
-    buttonOpenPosition = typedArray.getInt(R.styleable.TapBarMenu_tbm_buttonOpenPosition, BUTTON_POSITION_CENTER);
+    buttonSize =
+        typedArray.getDimensionPixelSize(R.styleable.TapBarMenu_tbm_buttonSize, getResources().getDimensionPixelSize(R.dimen.defaultButtonSize));
+    buttonMarginRight = typedArray.getDimensionPixelSize(R.styleable.TapBarMenu_tbm_buttonMarginRight, 0);
+    buttonMarginLeft = typedArray.getDimensionPixelSize(R.styleable.TapBarMenu_tbm_buttonMarginLeft, 0);
+    buttonPosition = typedArray.getInt(R.styleable.TapBarMenu_tbm_buttonPosition, BUTTON_POSITION_CENTER);
     showMenuItems = typedArray.getBoolean(R.styleable.TapBarMenu_tbm_showItems, false);
     typedArray.recycle();
   }
@@ -130,8 +127,7 @@ public class TapBarMenu extends LinearLayout {
     paint.setAntiAlias(true);
   }
 
-  @Override
-  protected void onAttachedToWindow() {
+  @Override protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     setupMenuItems();
   }
@@ -200,25 +196,61 @@ public class TapBarMenu extends LinearLayout {
    *
    * @param colorResId Color resource id. For example: R.color.holo_blue_light
    */
-  public void setTapBarMenuBackgroundColor(int colorResId) {
+  public void setMenuBackgroundColor(int colorResId) {
     backgroundColor = ContextCompat.getColor(getContext(), colorResId);
     paint.setColor(backgroundColor);
+    invalidate();
   }
 
-  @Override
-  public void setOnClickListener(OnClickListener listener) {
+  /**
+   * Set position of 'Open Menu' button.
+   *
+   * @param position One of: {@link #BUTTON_POSITION_CENTER}, {@link #BUTTON_POSITION_LEFT}, {@link #BUTTON_POSITION_RIGHT}
+   */
+  public void setButtonPosition(int position) {
+    buttonPosition = position;
+    invalidate();
+  }
+
+  /**
+   * Sets diameter of 'Open Menu' button.
+   *
+   * @param size Diameter in pixels.
+   */
+  public void setButtonSize(int size) {
+    buttonSize = size;
+    invalidate();
+  }
+
+  /**
+   * Sets left margin for 'Open Menu' button.
+   *
+   * @param margin Left margin in pixels
+   */
+  public void setButtonMarginLeft(int margin) {
+    this.buttonMarginLeft = margin;
+  }
+
+  /**
+   * Sets right margin for 'Open Menu' button.
+   *
+   * @param margin Right margin in pixels
+   */
+  public void setButtonMarginRight(int margin) {
+    this.buttonMarginRight = margin;
+  }
+
+  @Override public void setOnClickListener(OnClickListener listener) {
     onClickListener = listener;
   }
 
-  @Override
-  protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+  @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
     updateDimensions(w, h);
     yPosition = getY();
   }
 
-  @Override
-  protected void onDraw(Canvas canvas) {
+  @Override protected void onDraw(Canvas canvas) {
     canvas.drawPath(createRoundedRectPath(buttonLeft, buttonTop, buttonRight, buttonBottom, radius, radius, false), paint);
     if (state == State.CLOSED) {
       iconCloseDrawable.draw(canvas);
@@ -231,24 +263,24 @@ public class TapBarMenu extends LinearLayout {
     width = w;
     height = h;
     radius = buttonSize;
-    setButtonOpenPosition(w, h);
-    iconLeft = buttonLeft + buttonSize / 3;
-    iconTop = (height - buttonSize) / 2 + buttonSize / 3;
-    iconRight = buttonRight - buttonSize / 3;
-    iconBottom = (height + buttonSize) / 2 - buttonSize / 3;
+    setButtonPosition(w, h);
+    float iconLeft = buttonLeft + buttonSize / 3;
+    float iconTop = (height - buttonSize) / 2 + buttonSize / 3;
+    float iconRight = buttonRight - buttonSize / 3;
+    float iconBottom = (height + buttonSize) / 2 - buttonSize / 3;
     iconOpenDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
     iconCloseDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
   }
 
-  private void setButtonOpenPosition(float w, float h) {
-    if (buttonOpenPosition == BUTTON_POSITION_CENTER) {
+  private void setButtonPosition(float w, float h) {
+    if (buttonPosition == BUTTON_POSITION_CENTER) {
       buttonLeft = ((w / 2) - (buttonSize / 2));
-    } else if (buttonOpenPosition == BUTTON_POSITION_LEFT) {
+    } else if (buttonPosition == BUTTON_POSITION_LEFT) {
       buttonLeft = 0;
     } else {
       buttonLeft = w - buttonSize;
     }
-    int padding = buttonPaddingLeft - buttonPaddingRight;
+    int padding = buttonMarginLeft - buttonMarginRight;
     buttonLeft += padding;
     buttonRight = buttonLeft + buttonSize;
     buttonTop = (height - buttonSize) / 2;
@@ -287,8 +319,7 @@ public class TapBarMenu extends LinearLayout {
           .setDuration(show ? ANIMATION_DURATION / 2 : ANIMATION_DURATION / 3)
           .setStartDelay(show ? ANIMATION_DURATION / 4 : 0)
           .setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
+            @Override public void onAnimationEnd(Animator animation) {
               super.onAnimationEnd(animation);
               view.setVisibility(show ? VISIBLE : GONE);
             }
@@ -364,8 +395,7 @@ public class TapBarMenu extends LinearLayout {
     return path;
   }
 
-  @Override
-  public boolean onTouchEvent(@NonNull MotionEvent event) {
+  @Override public boolean onTouchEvent(@NonNull MotionEvent event) {
     if ((event.getX() > buttonLeftInitial && event.getX() < buttonRightInitial) && (event.getAction() == MotionEvent.ACTION_UP)) {
       if (onClickListener != null) {
         onClickListener.onClick(this);
@@ -374,8 +404,7 @@ public class TapBarMenu extends LinearLayout {
     return true;
   }
 
-  @Override
-  protected void onDetachedFromWindow() {
+  @Override protected void onDetachedFromWindow() {
     onDestroy();
     super.onDetachedFromWindow();
   }
@@ -398,36 +427,31 @@ public class TapBarMenu extends LinearLayout {
   }
 
   private ValueAnimator.AnimatorUpdateListener leftAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-    @Override
-    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+    @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
       buttonLeft = (float) valueAnimator.getAnimatedValue();
     }
   };
 
   private ValueAnimator.AnimatorUpdateListener rightAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-    @Override
-    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+    @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
       buttonRight = (float) valueAnimator.getAnimatedValue();
     }
   };
 
   private ValueAnimator.AnimatorUpdateListener topAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-    @Override
-    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+    @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
       buttonTop = (float) valueAnimator.getAnimatedValue();
     }
   };
 
   private ValueAnimator.AnimatorUpdateListener bottomAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-    @Override
-    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+    @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
       buttonBottom = (float) valueAnimator.getAnimatedValue();
     }
   };
 
   private ValueAnimator.AnimatorUpdateListener radiusAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-    @Override
-    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+    @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
       radius = (float) valueAnimator.getAnimatedValue();
       invalidate();
     }

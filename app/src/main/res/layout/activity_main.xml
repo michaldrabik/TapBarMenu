@@ -20,8 +20,7 @@
         android:layout_height="56dp"
         android:layout_gravity="bottom"
         android:layout_marginBottom="24dp"
-        app:tbm_backgroundColor="@color/red"
-        app:tbm_buttonOpenPosition="center"
+        app:tbm_backgroundColor="@color/blue"
         >
 
       <ImageView
