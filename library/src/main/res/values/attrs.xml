@@ -10,6 +10,10 @@
       <enum name="center" value="1" />
       <enum name="right" value="2" />
     </attr>
+    <attr name="tbm_menuAnchor" format="enum">
+      <enum name="bottom" value="3" />
+      <enum name="top" value="4" />
+    </attr>
     <attr name="tbm_showItems" format="boolean" />
   </declare-styleable>
 </resources>

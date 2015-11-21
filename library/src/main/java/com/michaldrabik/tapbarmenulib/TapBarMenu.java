@@ -34,6 +34,8 @@ public class TapBarMenu extends LinearLayout {
   public static final int BUTTON_POSITION_LEFT = 0;
   public static final int BUTTON_POSITION_CENTER = 1;
   public static final int BUTTON_POSITION_RIGHT = 2;
+  public static final int MENU_ANCHOR_BOTTOM = 3;
+  public static final int MENU_ANCHOR_TOP = 4;
   private static final int ANIMATION_DURATION = 500;
   private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator(2.5f);
 
@@ -70,6 +72,7 @@ public class TapBarMenu extends LinearLayout {
   private int buttonPosition;
   private int buttonMarginRight;
   private int buttonMarginLeft;
+  private int menuAnchor;
   private boolean showMenuItems;
 
   public TapBarMenu(Context context, AttributeSet attrs) {
@@ -100,6 +103,7 @@ public class TapBarMenu extends LinearLayout {
     buttonMarginRight = typedArray.getDimensionPixelSize(R.styleable.TapBarMenu_tbm_buttonMarginRight, 0);
     buttonMarginLeft = typedArray.getDimensionPixelSize(R.styleable.TapBarMenu_tbm_buttonMarginLeft, 0);
     buttonPosition = typedArray.getInt(R.styleable.TapBarMenu_tbm_buttonPosition, BUTTON_POSITION_CENTER);
+    menuAnchor = typedArray.getInt(R.styleable.TapBarMenu_tbm_menuAnchor, MENU_ANCHOR_BOTTOM);
     showMenuItems = typedArray.getBoolean(R.styleable.TapBarMenu_tbm_showItems, false);
     typedArray.recycle();
   }
@@ -160,7 +164,11 @@ public class TapBarMenu extends LinearLayout {
     animatorSet.start();
     ((Animatable) iconOpenDrawable).start();
     ViewGroup parentView = (ViewGroup) TapBarMenu.this.getParent();
-    this.animate().y(parentView.getBottom() - height).setDuration(ANIMATION_DURATION).setInterpolator(DECELERATE_INTERPOLATOR).start();
+    this.animate()
+        .y(menuAnchor == MENU_ANCHOR_BOTTOM ? parentView.getBottom() - height : 0)
+        .setDuration(ANIMATION_DURATION)
+        .setInterpolator(DECELERATE_INTERPOLATOR)
+        .start();
   }
 
   /**
@@ -193,7 +201,6 @@ public class TapBarMenu extends LinearLayout {
 
   /**
    * Sets TapBarMenu's background color from given resource.
-   *
    * @param colorResId Color resource id. For example: R.color.holo_blue_light
    */
   public void setMenuBackgroundColor(int colorResId) {
@@ -204,8 +211,7 @@ public class TapBarMenu extends LinearLayout {
 
   /**
    * Set position of 'Open Menu' button.
-   *
-   * @param position One of: {@link #BUTTON_POSITION_CENTER}, {@link #BUTTON_POSITION_LEFT}, {@link #BUTTON_POSITION_RIGHT}
+   * @param position One of: {@link #BUTTON_POSITION_CENTER}, {@link #BUTTON_POSITION_LEFT}, {@link #BUTTON_POSITION_RIGHT}.
    */
   public void setButtonPosition(int position) {
     buttonPosition = position;
@@ -214,7 +220,6 @@ public class TapBarMenu extends LinearLayout {
 
   /**
    * Sets diameter of 'Open Menu' button.
-   *
    * @param size Diameter in pixels.
    */
   public void setButtonSize(int size) {
@@ -224,20 +229,26 @@ public class TapBarMenu extends LinearLayout {
 
   /**
    * Sets left margin for 'Open Menu' button.
-   *
    * @param margin Left margin in pixels
    */
   public void setButtonMarginLeft(int margin) {
-    this.buttonMarginLeft = margin;
+    buttonMarginLeft = margin;
   }
 
   /**
    * Sets right margin for 'Open Menu' button.
-   *
    * @param margin Right margin in pixels
    */
   public void setButtonMarginRight(int margin) {
-    this.buttonMarginRight = margin;
+    buttonMarginRight = margin;
+  }
+
+  /**
+   * Set anchor point of the menu. Can be either bottom or top.
+   * @param anchor One of: {@link #MENU_ANCHOR_BOTTOM}, {@link #MENU_ANCHOR_TOP}.
+   */
+  public void setAnchor(int anchor) {
+    menuAnchor = anchor;
   }
 
   @Override public void setOnClickListener(OnClickListener listener) {
@@ -305,7 +316,8 @@ public class TapBarMenu extends LinearLayout {
   private void showIcons(final boolean show) {
     for (int i = 0; i < getChildCount(); i++) {
       final View view = getChildAt(i);
-      view.setTranslationY(show ? view.getHeight() : 0f);
+      int translation = menuAnchor == MENU_ANCHOR_BOTTOM ? view.getHeight() : -view.getHeight();
+      view.setTranslationY(show ? translation : 0f);
       view.setScaleX(show ? 0f : 1f);
       view.setScaleY(show ? 0f : 1f);
       view.setVisibility(VISIBLE);
