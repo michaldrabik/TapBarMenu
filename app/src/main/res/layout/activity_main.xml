@@ -18,10 +18,10 @@
         android:id="@+id/tapBarMenu"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_gravity="top"
-        android:layout_marginTop="24dp"
-        app:tbm_backgroundColor="@color/red"
-        app:tbm_menuAnchor="top"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="24dp"
+        app:tbm_backgroundColor="@color/blue"
+        app:tbm_menuAnchor="bottom"
         >
 
       <ImageView
