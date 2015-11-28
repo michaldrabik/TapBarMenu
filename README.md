@@ -1,6 +1,9 @@
 #TapBarMenu
 Simple library that helps creating a "Tap Bar" menu layout.
 
+![alt text](http://i.giphy.com/ZRCzrySXUaMwM.gif "Demo 1")
+![alt text](http://i.giphy.com/zIBFfp4iLlGAo.gif "Demo 2")
+
 Demo 1: https://youtu.be/DjY0cTWWtao
 
 Demo 2: https://youtu.be/dWuPMN6WTOY
@@ -77,6 +80,10 @@ All available XML parameters are listed below:
 | app:tbm_buttonMarginRight|dimension|Button position right margin.<br>*Default: 0*|
 | app:tbm_buttonMarginLeft|dimension|Button position left margin.<br>*Default: 0*|
 | app:tbm_menuAnchor|top, bottom|Where menu should expand.<br>*Default: bottom*|
+
+##Kudos
+
+I've been inspired by [Aaron Benjamin's](https://dribbble.com/shots/2345329-Tab-Bar-Animation) great design.
 
 ##License
 
