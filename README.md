@@ -1,12 +1,11 @@
-# TapBarMenu
+#TapBarMenu
 Simple library that helps creating a "Tap Bar" menu layout.
 
 Demo 1: https://youtu.be/DjY0cTWWtao
 
 Demo 2: https://youtu.be/dWuPMN6WTOY
 
-Install
----
+##Install
 Add the dependency to your `build.gradle`:
 
 ```groovy
@@ -17,8 +16,7 @@ dependencies {
 
 This library is `minSdkVersion=16`.
 
-Use
----
+##Use
 
 Check sample project for a full example.
 
@@ -67,8 +65,20 @@ tapBarMenu.setOnClickListener(new View.OnClickListener() {
 
 *Note: TapBarMenu will always expand to its parent width. You can choose between 2 anchors `bottom` or `top` - see attributes below.*
 
-License
----
+##Customize
+All available XML parameters are listed below:
+
+| Attribute     | Format         | Description  |
+| ------------- |:-------------:|:-----:|
+| app:tbm_showItems|true, false|Use this to show menu's items in a XML preview window.<br>Useful for designing your menu.<br>*Default: false*|
+| app:tbm_backgroundColor|color|Menu color.<br>*Default: red*|
+| app:tbm_buttonSize|dimension|Diameter of the menu button.<br>*Default: 56dp*|
+| app:tbm_buttonPosition|left, right, center|Position of the menu button.<br>*Default: center*|
+| app:tbm_buttonMarginRight|dimension|Button position right margin.<br>*Default: 0*|
+| app:tbm_buttonMarginLeft|dimension|Button position left margin.<br>*Default: 0*|
+| app:tbm_menuAnchor|top, bottom|Where menu should expand.<br>*Default: bottom*|
+
+##License
 
     Copyright (C) 2015 Michal Drabik
 
