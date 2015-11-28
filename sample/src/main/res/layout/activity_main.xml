@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_gray"
@@ -20,7 +19,7 @@
         android:layout_height="56dp"
         android:layout_gravity="bottom"
         android:layout_marginBottom="24dp"
-        app:tbm_backgroundColor="@color/blue"
+        app:tbm_backgroundColor="@color/red"
         app:tbm_menuAnchor="bottom"
         >
 
@@ -72,15 +71,6 @@
           />
 
     </com.michaldrabik.tapbarmenulib.TapBarMenu>
-
-    <TextView
-        android:id="@+id/label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        />
 
   </FrameLayout>
 
