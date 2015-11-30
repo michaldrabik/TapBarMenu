@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:duration="500"
+    android:duration="@integer/animationDuration"
     android:interpolator="@android:interpolator/decelerate_cubic"
     android:repeatMode="reverse"
     android:repeatCount="0"

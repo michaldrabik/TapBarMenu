@@ -36,7 +36,6 @@ public class TapBarMenu extends LinearLayout {
   public static final int BUTTON_POSITION_RIGHT = 2;
   public static final int MENU_ANCHOR_BOTTOM = 3;
   public static final int MENU_ANCHOR_TOP = 4;
-  private static final int ANIMATION_DURATION = 500;
   private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator(2.5f);
 
   private enum State {
@@ -52,6 +51,7 @@ public class TapBarMenu extends LinearLayout {
   private ValueAnimator bottomAnimator;
   private ValueAnimator radiusAnimator;
   private AnimatorSet animatorSet;
+  private int animationDuration;
   private float width;
   private float height;
   private float buttonLeft;
@@ -114,8 +114,9 @@ public class TapBarMenu extends LinearLayout {
     topAnimator = new ValueAnimator();
     bottomAnimator = new ValueAnimator();
     radiusAnimator = new ValueAnimator();
+    animationDuration = getResources().getInteger(R.integer.animationDuration);
     animatorSet = new AnimatorSet();
-    animatorSet.setDuration(ANIMATION_DURATION);
+    animatorSet.setDuration(animationDuration);
     animatorSet.setInterpolator(DECELERATE_INTERPOLATOR);
   }
 
@@ -166,7 +167,7 @@ public class TapBarMenu extends LinearLayout {
     ViewGroup parentView = (ViewGroup) TapBarMenu.this.getParent();
     this.animate()
         .y(menuAnchor == MENU_ANCHOR_BOTTOM ? parentView.getBottom() - height : 0)
-        .setDuration(ANIMATION_DURATION)
+        .setDuration(animationDuration)
         .setInterpolator(DECELERATE_INTERPOLATOR)
         .start();
   }
@@ -189,7 +190,7 @@ public class TapBarMenu extends LinearLayout {
     animatorSet.removeAllListeners();
     animatorSet.start();
     ((Animatable) iconCloseDrawable).start();
-    this.animate().y(yPosition).setDuration(ANIMATION_DURATION).setInterpolator(DECELERATE_INTERPOLATOR).start();
+    this.animate().y(yPosition).setDuration(animationDuration).setInterpolator(DECELERATE_INTERPOLATOR).start();
   }
 
   /**
@@ -328,8 +329,8 @@ public class TapBarMenu extends LinearLayout {
           .translationY(0f)
           .alpha(show ? 1f : 0f)
           .setInterpolator(DECELERATE_INTERPOLATOR)
-          .setDuration(show ? ANIMATION_DURATION / 2 : ANIMATION_DURATION / 3)
-          .setStartDelay(show ? ANIMATION_DURATION / 4 : 0)
+          .setDuration(show ? animationDuration / 2 : animationDuration / 3)
+          .setStartDelay(show ? animationDuration / 3 : 0)
           .setListener(new AnimatorListenerAdapter() {
             @Override public void onAnimationEnd(Animator animation) {
               super.onAnimationEnd(animation);
