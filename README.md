@@ -13,11 +13,9 @@ Add the dependency to your `build.gradle`:
 
 ```groovy
 dependencies {
-    compile 'com.github.michaldrabik:tapbarmenu:1.0.0'
+    compile 'com.github.michaldrabik:tapbarmenu:1.0.1'
 }
 ```
-
-This library is `minSdkVersion=16`.
 
 ##Use
 
