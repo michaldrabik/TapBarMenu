@@ -8,8 +8,8 @@ android {
     applicationId "com.michaldrabik.tapbarmenu"
     minSdkVersion 16
     targetSdkVersion 23
-    versionCode 1
-    versionName "1.0"
+    versionCode 2
+    versionName "1.1"
   }
   buildTypes {
     release {
@@ -24,5 +24,5 @@ dependencies {
   testCompile 'junit:junit:4.12'
   compile 'com.android.support:appcompat-v7:23.1.1'
   compile 'com.jakewharton:butterknife:7.0.1'
-  compile 'com.github.michaldrabik:tapbarmenu:1.0.0'
+  compile 'com.github.michaldrabik:tapbarmenu:1.0.1'
 }
