@@ -91,12 +91,23 @@ public class TapBarMenu extends LinearLayout {
     setGravity(Gravity.CENTER);
     setupAnimators();
     setupPaint();
-    iconOpenDrawable = ResourcesCompat.getDrawable(getContext(), R.drawable.icon_animated);
-    iconCloseDrawable = ResourcesCompat.getDrawable(getContext(), R.drawable.icon_close_animated);
   }
 
   private void setupAttributes(AttributeSet attrs) {
     TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.TapBarMenu, 0, 0);
+
+    if(typedArray.hasValue(R.styleable.TapBarMenu_tbm_icon_open)){
+      iconOpenDrawable = typedArray.getDrawable(R.styleable.TapBarMenu_tbm_icon_open);
+    }else{
+      iconOpenDrawable = ResourcesCompat.getDrawable(getContext(), R.drawable.icon_animated);
+    }
+
+    if(typedArray.hasValue(R.styleable.TapBarMenu_tbm_icon_open)){
+      iconCloseDrawable = typedArray.getDrawable(R.styleable.TapBarMenu_tbm_icon_close);
+    }else{
+      iconCloseDrawable = ResourcesCompat.getDrawable(getContext(), R.drawable.icon_close_animated);
+    }
+
     backgroundColor = typedArray.getColor(R.styleable.TapBarMenu_tbm_backgroundColor, ContextCompat.getColor(getContext(), R.color.red));
     buttonSize =
         typedArray.getDimensionPixelSize(R.styleable.TapBarMenu_tbm_buttonSize, getResources().getDimensionPixelSize(R.dimen.defaultButtonSize));
@@ -250,6 +261,24 @@ public class TapBarMenu extends LinearLayout {
    */
   public void setAnchor(int anchor) {
     menuAnchor = anchor;
+  }
+
+  /*
+  * Sets the passed drawable as the drawable to be used in the open state.
+  * @param openDrawable The open state drawable
+  * */
+  public void setIconOpenDrawable(Drawable openDrawable) {
+    this.iconOpenDrawable = openDrawable;
+    invalidate();
+  }
+
+  /*
+  * Sets the passed drawable as the drawable to be used in the closed state.
+  * @param closeDrawable The closed state drawable
+  * */
+  public void setIconCloseDrawable(Drawable closeDrawable) {
+    this.iconCloseDrawable = closeDrawable;
+    invalidate();
   }
 
   @Override public void setOnClickListener(OnClickListener listener) {
