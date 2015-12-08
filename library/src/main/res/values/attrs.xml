@@ -5,6 +5,8 @@
     <attr name="tbm_buttonSize" format="dimension" />
     <attr name="tbm_buttonMarginRight" format="dimension" />
     <attr name="tbm_buttonMarginLeft" format="dimension" />
+    <attr name="tbm_icon_close" format="reference" />
+    <attr name="tbm_icon_open" format="reference" />
     <attr name="tbm_buttonPosition" format="enum">
       <enum name="left" value="0" />
       <enum name="center" value="1" />
