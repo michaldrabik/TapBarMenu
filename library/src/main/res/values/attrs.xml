@@ -5,6 +5,8 @@
     <attr name="tbm_buttonSize" format="dimension" />
     <attr name="tbm_buttonMarginRight" format="dimension" />
     <attr name="tbm_buttonMarginLeft" format="dimension" />
+    <attr name="tbm_iconClosed" format="reference" />
+    <attr name="tbm_iconOpened" format="reference" />
     <attr name="tbm_icon_close" format="reference" />
     <attr name="tbm_icon_open" format="reference" />
     <attr name="tbm_buttonPosition" format="enum">

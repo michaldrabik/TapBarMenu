@@ -63,8 +63,8 @@ public class TapBarMenu extends LinearLayout {
   private float radius;
   private float yPosition;
   private OnClickListener onClickListener;
-  private Drawable iconOpenDrawable;
-  private Drawable iconCloseDrawable;
+  private Drawable iconOpenedDrawable;
+  private Drawable iconClosedDrawable;
 
   //Custom XML Attributes
   private int backgroundColor;
@@ -96,16 +96,16 @@ public class TapBarMenu extends LinearLayout {
   private void setupAttributes(AttributeSet attrs) {
     TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.TapBarMenu, 0, 0);
 
-    if(typedArray.hasValue(R.styleable.TapBarMenu_tbm_icon_open)){
-      iconOpenDrawable = typedArray.getDrawable(R.styleable.TapBarMenu_tbm_icon_open);
-    }else{
-      iconOpenDrawable = ResourcesCompat.getDrawable(getContext(), R.drawable.icon_animated);
+    if (typedArray.hasValue(R.styleable.TapBarMenu_tbm_iconOpened)) {
+      iconOpenedDrawable = typedArray.getDrawable(R.styleable.TapBarMenu_tbm_iconOpened);
+    } else {
+      iconOpenedDrawable = ResourcesCompat.getDrawable(getContext(), R.drawable.icon_animated);
     }
 
-    if(typedArray.hasValue(R.styleable.TapBarMenu_tbm_icon_open)){
-      iconCloseDrawable = typedArray.getDrawable(R.styleable.TapBarMenu_tbm_icon_close);
-    }else{
-      iconCloseDrawable = ResourcesCompat.getDrawable(getContext(), R.drawable.icon_close_animated);
+    if (typedArray.hasValue(R.styleable.TapBarMenu_tbm_iconClosed)) {
+      iconClosedDrawable = typedArray.getDrawable(R.styleable.TapBarMenu_tbm_iconClosed);
+    } else {
+      iconClosedDrawable = ResourcesCompat.getDrawable(getContext(), R.drawable.icon_close_animated);
     }
 
     backgroundColor = typedArray.getColor(R.styleable.TapBarMenu_tbm_backgroundColor, ContextCompat.getColor(getContext(), R.color.red));
@@ -174,7 +174,7 @@ public class TapBarMenu extends LinearLayout {
 
     animatorSet.playTogether(radiusAnimator, leftAnimator, rightAnimator, topAnimator, bottomAnimator);
     animatorSet.start();
-    ((Animatable) iconOpenDrawable).start();
+    ((Animatable) iconOpenedDrawable).start();
     ViewGroup parentView = (ViewGroup) TapBarMenu.this.getParent();
     this.animate()
         .y(menuAnchor == MENU_ANCHOR_BOTTOM ? parentView.getBottom() - height : 0)
@@ -200,7 +200,7 @@ public class TapBarMenu extends LinearLayout {
     animatorSet.playTogether(radiusAnimator, leftAnimator, rightAnimator, topAnimator, bottomAnimator);
     animatorSet.removeAllListeners();
     animatorSet.start();
-    ((Animatable) iconCloseDrawable).start();
+    ((Animatable) iconClosedDrawable).start();
     this.animate().y(yPosition).setDuration(animationDuration).setInterpolator(DECELERATE_INTERPOLATOR).start();
   }
 
@@ -263,21 +263,39 @@ public class TapBarMenu extends LinearLayout {
     menuAnchor = anchor;
   }
 
-  /*
+  /**
   * Sets the passed drawable as the drawable to be used in the open state.
   * @param openDrawable The open state drawable
   * */
   public void setIconOpenDrawable(Drawable openDrawable) {
-    this.iconOpenDrawable = openDrawable;
+    this.iconOpenedDrawable = openDrawable;
     invalidate();
   }
 
-  /*
+  /**
   * Sets the passed drawable as the drawable to be used in the closed state.
   * @param closeDrawable The closed state drawable
   * */
   public void setIconCloseDrawable(Drawable closeDrawable) {
-    this.iconCloseDrawable = closeDrawable;
+    this.iconClosedDrawable = closeDrawable;
+    invalidate();
+  }
+
+  /**
+  * Sets the passed drawable as the drawable to be used in the open state.
+  * @param openDrawable The open state drawable
+  * */
+  public void setIconOpenedDrawable(Drawable openDrawable) {
+    this.iconOpenedDrawable = openDrawable;
+    invalidate();
+  }
+
+  /**
+  * Sets the passed drawable as the drawable to be used in the closed state.
+  * @param closeDrawable The closed state drawable
+  * */
+  public void setIconClosedDrawable(Drawable closeDrawable) {
+    this.iconClosedDrawable = closeDrawable;
     invalidate();
   }
 
@@ -294,9 +312,9 @@ public class TapBarMenu extends LinearLayout {
   @Override protected void onDraw(Canvas canvas) {
     canvas.drawPath(createRoundedRectPath(buttonLeft, buttonTop, buttonRight, buttonBottom, radius, radius, false), paint);
     if (state == State.CLOSED) {
-      iconCloseDrawable.draw(canvas);
+      iconClosedDrawable.draw(canvas);
     } else {
-      iconOpenDrawable.draw(canvas);
+      iconOpenedDrawable.draw(canvas);
     }
   }
 
@@ -309,8 +327,8 @@ public class TapBarMenu extends LinearLayout {
     float iconTop = (height - buttonSize) / 2 + buttonSize / 3;
     float iconRight = buttonRight - buttonSize / 3;
     float iconBottom = (height + buttonSize) / 2 - buttonSize / 3;
-    iconOpenDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
-    iconCloseDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
+    iconOpenedDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
+    iconClosedDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
   }
 
   private void setButtonPosition(float w, float h) {
@@ -452,8 +470,8 @@ public class TapBarMenu extends LinearLayout {
   }
 
   private void onDestroy() {
-    iconOpenDrawable = null;
-    iconCloseDrawable = null;
+    iconOpenedDrawable = null;
+    iconClosedDrawable = null;
     leftAnimator = null;
     rightAnimator = null;
     radiusAnimator = null;
