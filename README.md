@@ -88,8 +88,8 @@ I've been inspired by [Aaron Benjamin's](https://dribbble.com/shots/2345329-Tab-
 ##Versions
 
 1.0.2 - You can now add custom icon via XML or code. See attributes.
-1.0.1 - Pre 21 SDK bugfixes
-1.0.0 - Initial release
+<br>1.0.1 - Pre 21 SDK bugfixes
+<br>1.0.0 - Initial release
 
 ##License
 
