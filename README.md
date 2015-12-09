@@ -13,7 +13,7 @@ Add the dependency to your `build.gradle`:
 
 ```groovy
 dependencies {
-    compile 'com.github.michaldrabik:tapbarmenu:1.0.1'
+    compile 'com.github.michaldrabik:tapbarmenu:1.0.2'
 }
 ```
 
@@ -77,11 +77,19 @@ All available XML parameters are listed below:
 | app:tbm_buttonPosition|left, right, center|Position of the menu button.<br>*Default: center*|
 | app:tbm_buttonMarginRight|dimension|Button position right margin.<br>*Default: 0*|
 | app:tbm_buttonMarginLeft|dimension|Button position left margin.<br>*Default: 0*|
+| app:tbm_iconOpened|drawable|Custom icon for opened state. Must be an animated vector drawable.<br>*Default: X icon*|
+| app:tbm_iconClosed|drawable|Custom icon for closed state. Must be an animated vector drawable.<br>*Default: Menu icon*|
 | app:tbm_menuAnchor|top, bottom|Where menu should expand.<br>*Default: bottom*|
 
 ##Kudos
 
 I've been inspired by [Aaron Benjamin's](https://dribbble.com/shots/2345329-Tab-Bar-Animation) great design.
+
+##Versions
+
+1.0.2 - You can now add custom icon via XML or code. See attributes.
+1.0.1 - Pre 21 SDK bugfixes
+1.0.0 - Initial release
 
 ##License
 
