@@ -455,6 +455,10 @@ public class TapBarMenu extends LinearLayout {
     return path;
   }
 
+  @Override public boolean onInterceptTouchEvent(MotionEvent event) {
+    return (event.getX() > buttonLeftInitial && event.getX() < buttonRightInitial);
+  }
+
   @Override public boolean onTouchEvent(@NonNull MotionEvent event) {
     if ((event.getX() > buttonLeftInitial && event.getX() < buttonRightInitial) && (event.getAction() == MotionEvent.ACTION_UP)) {
       if (onClickListener != null) {
