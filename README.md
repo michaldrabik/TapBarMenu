@@ -41,6 +41,11 @@ TapBarMenu is an extension of a LinearLayout so you can simply put it in your XM
       android:src="@drawable/ic_thumb_up"
       />
   
+    <Space
+      android:layout_width="56dp"
+      android:layout_height="match_parent"
+      />
+  
     <ImageView
       android:id="@+id/item2"
       android:layout_width="0dp"
