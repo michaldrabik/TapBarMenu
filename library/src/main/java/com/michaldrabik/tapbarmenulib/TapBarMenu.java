@@ -50,6 +50,8 @@ public class TapBarMenu extends LinearLayout {
   private static final int BOTTOM = 3;
   private static final int RADIUS = 4;
 
+  AnimatorSet animatorSet = new AnimatorSet();
+
   private ValueAnimator[] animator = new ValueAnimator[5];
   private float [] button = new float[5];
 
@@ -155,6 +157,10 @@ public class TapBarMenu extends LinearLayout {
     });
 
     animationDuration = getResources().getInteger(R.integer.animationDuration);
+
+    animatorSet.setDuration(animationDuration);
+    animatorSet.setInterpolator(DECELERATE_INTERPOLATOR);
+    animatorSet.playTogether(animator);
   }
 
   private void setupMenuItems() {
@@ -197,10 +203,6 @@ public class TapBarMenu extends LinearLayout {
     animator[TOP].setFloatValues(button[TOP], 0);
     animator[BOTTOM].setFloatValues(button[BOTTOM], height);
 
-    AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.setDuration(animationDuration);
-    animatorSet.setInterpolator(DECELERATE_INTERPOLATOR);
-    animatorSet.playTogether(animator);
     animatorSet.start();
     ((Animatable) iconOpenedDrawable).start();
     ViewGroup parentView = (ViewGroup) TapBarMenu.this.getParent();
@@ -225,10 +227,6 @@ public class TapBarMenu extends LinearLayout {
     animator[TOP].setFloatValues(0, button[TOP]);
     animator[BOTTOM].setFloatValues(height, button[BOTTOM]);
 
-    AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.setDuration(animationDuration);
-    animatorSet.setInterpolator(DECELERATE_INTERPOLATOR);
-    animatorSet.playTogether(animator);
     animatorSet.start();
     ((Animatable) iconClosedDrawable).start();
     this.animate()
@@ -356,7 +354,7 @@ public class TapBarMenu extends LinearLayout {
     width = w;
     height = h;
     button[RADIUS] = buttonSize;
-    setButtonPosition(width, height);
+    setButtonPosition(width);
     float iconLeft = button[LEFT] + buttonSize / 3;
     float iconTop = (height - buttonSize) / 2 + buttonSize / 3;
     float iconRight = button[RIGHT] - buttonSize / 3;
@@ -365,7 +363,7 @@ public class TapBarMenu extends LinearLayout {
     iconClosedDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
   }
 
-  private void setButtonPosition(float w, float h) {
+  private void setButtonPosition(float w) {
     if (buttonPosition == BUTTON_POSITION_CENTER) {
       button[LEFT] = ((w / 2) - (buttonSize / 2));
     } else if (buttonPosition == BUTTON_POSITION_LEFT) {
@@ -376,8 +374,8 @@ public class TapBarMenu extends LinearLayout {
     int padding = buttonMarginLeft - buttonMarginRight;
     button[LEFT] += padding;
     button[RIGHT] = button[LEFT] + buttonSize;
-    button[TOP] = (h - buttonSize) / 2;
-    button[BOTTOM] = (h + buttonSize) / 2;
+    button[TOP] = (height - buttonSize) / 2;
+    button[BOTTOM] = (height + buttonSize) / 2;
     buttonLeftInitial = button[LEFT];
     buttonRightInitial = button[RIGHT];
   }
