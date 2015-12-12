@@ -203,6 +203,7 @@ public class TapBarMenu extends LinearLayout {
     animator[TOP].setFloatValues(button[TOP], 0);
     animator[BOTTOM].setFloatValues(button[BOTTOM], height);
 
+    animatorSet.cancel();
     animatorSet.start();
     ((Animatable) iconOpenedDrawable).start();
     ViewGroup parentView = (ViewGroup) TapBarMenu.this.getParent();
@@ -227,6 +228,7 @@ public class TapBarMenu extends LinearLayout {
     animator[TOP].setFloatValues(0, button[TOP]);
     animator[BOTTOM].setFloatValues(height, button[BOTTOM]);
 
+    animatorSet.cancel();
     animatorSet.start();
     ((Animatable) iconClosedDrawable).start();
     this.animate()
