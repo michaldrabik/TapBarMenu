@@ -322,7 +322,7 @@ public class TapBarMenu extends LinearLayout {
     width = w;
     height = h;
     radius = buttonSize;
-    setButtonPosition(w, h);
+    setButtonPosition(w);
     float iconLeft = buttonLeft + buttonSize / 3;
     float iconTop = (height - buttonSize) / 2 + buttonSize / 3;
     float iconRight = buttonRight - buttonSize / 3;
@@ -331,7 +331,7 @@ public class TapBarMenu extends LinearLayout {
     iconClosedDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
   }
 
-  private void setButtonPosition(float w, float h) {
+  private void setButtonPosition(float w) {
     if (buttonPosition == BUTTON_POSITION_CENTER) {
       buttonLeft = ((w / 2) - (buttonSize / 2));
     } else if (buttonPosition == BUTTON_POSITION_LEFT) {
