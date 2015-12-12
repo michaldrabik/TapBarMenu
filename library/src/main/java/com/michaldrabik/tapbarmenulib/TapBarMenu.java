@@ -1,6 +1,5 @@
 package com.michaldrabik.tapbarmenulib;
 
-import android.renderscript.Sampler;
 import android.util.Log;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -25,8 +24,6 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import com.wnafee.vector.compat.ResourcesCompat;
-
-import java.util.EnumMap;
 
 /**
  * TapBar Menu Layout.
@@ -122,11 +119,8 @@ public class TapBarMenu extends LinearLayout {
   }
 
   private void setupAnimators() {
-    animator[LEFT] = new ValueAnimator();
-    animator[RIGHT] = new ValueAnimator();
-    animator[TOP] = new ValueAnimator();
-    animator[BOTTOM] = new ValueAnimator();
-    animator[RADIUS] = new ValueAnimator();
+    for ( int i = 0 ; i < 5 ; i++ )
+      animator[i] = new ValueAnimator();
 
     animator[LEFT].addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override
@@ -382,8 +376,8 @@ public class TapBarMenu extends LinearLayout {
     int padding = buttonMarginLeft - buttonMarginRight;
     button[LEFT] += padding;
     button[RIGHT] = button[LEFT] + buttonSize;
-    button[TOP] = (height - buttonSize) / 2;
-    button[BOTTOM] = (height + buttonSize) / 2;
+    button[TOP] = (h - buttonSize) / 2;
+    button[BOTTOM] = (h + buttonSize) / 2;
     buttonLeftInitial = button[LEFT];
     buttonRightInitial = button[RIGHT];
   }
