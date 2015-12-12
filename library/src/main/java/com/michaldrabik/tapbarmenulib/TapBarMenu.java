@@ -1,5 +1,6 @@
 package com.michaldrabik.tapbarmenulib;
 
+import android.util.Log;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -43,24 +44,24 @@ public class TapBarMenu extends LinearLayout {
     CLOSED
   }
 
+  private static final int LEFT = 0;
+  private static final int RIGHT = 1;
+  private static final int TOP = 2;
+  private static final int BOTTOM = 3;
+  private static final int RADIUS = 4;
+
+  AnimatorSet animatorSet = new AnimatorSet();
+
+  private ValueAnimator[] animator = new ValueAnimator[5];
+  private float [] button = new float[5];
+
   private State state = State.CLOSED;
   private Paint paint;
-  private ValueAnimator leftAnimator;
-  private ValueAnimator rightAnimator;
-  private ValueAnimator topAnimator;
-  private ValueAnimator bottomAnimator;
-  private ValueAnimator radiusAnimator;
-  private AnimatorSet animatorSet;
   private int animationDuration;
   private float width;
   private float height;
-  private float buttonLeft;
-  private float buttonRight;
-  private float buttonTop;
-  private float buttonBottom;
   private float buttonLeftInitial;
   private float buttonRightInitial;
-  private float radius;
   private float yPosition;
   private OnClickListener onClickListener;
   private Drawable iconOpenedDrawable;
@@ -120,15 +121,46 @@ public class TapBarMenu extends LinearLayout {
   }
 
   private void setupAnimators() {
-    leftAnimator = new ValueAnimator();
-    rightAnimator = new ValueAnimator();
-    topAnimator = new ValueAnimator();
-    bottomAnimator = new ValueAnimator();
-    radiusAnimator = new ValueAnimator();
+    for ( int i = 0 ; i < 5 ; i++ )
+      animator[i] = new ValueAnimator();
+
+    animator[LEFT].addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator valueAnimator) {
+        button[LEFT] = (float) valueAnimator.getAnimatedValue();
+      }
+    });
+    animator[RIGHT].addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator valueAnimator) {
+        button[RIGHT] = (float) valueAnimator.getAnimatedValue();
+      }
+    });
+    animator[TOP].addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator valueAnimator) {
+        button[TOP] = (float) valueAnimator.getAnimatedValue();
+      }
+    });
+    animator[BOTTOM].addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator valueAnimator) {
+        button[BOTTOM] = (float) valueAnimator.getAnimatedValue();
+      }
+    });
+    animator[RADIUS].addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator valueAnimator) {
+        button[RADIUS] = (float) valueAnimator.getAnimatedValue();
+        invalidate();
+      }
+    });
+
     animationDuration = getResources().getInteger(R.integer.animationDuration);
-    animatorSet = new AnimatorSet();
+
     animatorSet.setDuration(animationDuration);
     animatorSet.setInterpolator(DECELERATE_INTERPOLATOR);
+    animatorSet.playTogether(animator);
   }
 
   private void setupMenuItems() {
@@ -152,11 +184,10 @@ public class TapBarMenu extends LinearLayout {
    * Opens the menu if it's closed or close it if it's opened.
    */
   public void toggle() {
-    if (state == State.OPENED) {
+    if (state == State.OPENED)
       close();
-    } else {
+    else
       open();
-    }
   }
 
   /**
@@ -165,22 +196,22 @@ public class TapBarMenu extends LinearLayout {
   public void open() {
     state = State.OPENED;
     showIcons(true);
-    leftAnimator = ValueAnimator.ofFloat(buttonLeft, 0);
-    rightAnimator = ValueAnimator.ofFloat(buttonRight, width);
-    radiusAnimator = ValueAnimator.ofFloat(radius, 0);
-    topAnimator = ValueAnimator.ofFloat(buttonTop, 0);
-    bottomAnimator = ValueAnimator.ofFloat(buttonBottom, height);
-    updateAnimatorsListeners();
 
-    animatorSet.playTogether(radiusAnimator, leftAnimator, rightAnimator, topAnimator, bottomAnimator);
+    animator[LEFT].setFloatValues(button[LEFT], 0);
+    animator[RIGHT].setFloatValues(button[RIGHT], width);
+    animator[RADIUS].setFloatValues(button[RADIUS], 0);
+    animator[TOP].setFloatValues(button[TOP], 0);
+    animator[BOTTOM].setFloatValues(button[BOTTOM], height);
+
+    animatorSet.cancel();
     animatorSet.start();
     ((Animatable) iconOpenedDrawable).start();
     ViewGroup parentView = (ViewGroup) TapBarMenu.this.getParent();
     this.animate()
         .y(menuAnchor == MENU_ANCHOR_BOTTOM ? parentView.getBottom() - height : 0)
-        .setDuration(animationDuration)
-        .setInterpolator(DECELERATE_INTERPOLATOR)
-        .start();
+            .setDuration(animationDuration)
+            .setInterpolator(DECELERATE_INTERPOLATOR)
+            .start();
   }
 
   /**
@@ -190,18 +221,21 @@ public class TapBarMenu extends LinearLayout {
     updateDimensions(width, height);
     state = State.CLOSED;
     showIcons(false);
-    leftAnimator = ValueAnimator.ofFloat(0, buttonLeft);
-    rightAnimator = ValueAnimator.ofFloat(width, buttonRight);
-    radiusAnimator = ValueAnimator.ofFloat(0, radius);
-    topAnimator = ValueAnimator.ofFloat(0, buttonTop);
-    bottomAnimator = ValueAnimator.ofFloat(height, buttonBottom);
-    updateAnimatorsListeners();
 
-    animatorSet.playTogether(radiusAnimator, leftAnimator, rightAnimator, topAnimator, bottomAnimator);
-    animatorSet.removeAllListeners();
+    animator[LEFT].setFloatValues(0, button[LEFT]);
+    animator[RIGHT].setFloatValues(width, button[RIGHT]);
+    animator[RADIUS].setFloatValues(0, button[RADIUS]);
+    animator[TOP].setFloatValues(0, button[TOP]);
+    animator[BOTTOM].setFloatValues(height, button[BOTTOM]);
+
+    animatorSet.cancel();
     animatorSet.start();
     ((Animatable) iconClosedDrawable).start();
-    this.animate().y(yPosition).setDuration(animationDuration).setInterpolator(DECELERATE_INTERPOLATOR).start();
+    this.animate()
+            .y(yPosition)
+            .setDuration(animationDuration)
+            .setInterpolator(DECELERATE_INTERPOLATOR)
+            .start();
   }
 
   /**
@@ -310,7 +344,7 @@ public class TapBarMenu extends LinearLayout {
   }
 
   @Override protected void onDraw(Canvas canvas) {
-    canvas.drawPath(createRoundedRectPath(buttonLeft, buttonTop, buttonRight, buttonBottom, radius, radius, false), paint);
+    canvas.drawPath(createRoundedRectPath(button[LEFT], button[TOP], button[RIGHT], button[BOTTOM], button[RADIUS], button[RADIUS], false), paint);
     if (state == State.CLOSED) {
       iconClosedDrawable.draw(canvas);
     } else {
@@ -321,11 +355,13 @@ public class TapBarMenu extends LinearLayout {
   private void updateDimensions(float w, float h) {
     width = w;
     height = h;
-    radius = buttonSize;
-    setButtonPosition(w);
-    float iconLeft = buttonLeft + buttonSize / 3;
+
+    button[RADIUS] = buttonSize;
+    setButtonPosition(width);
+    float iconLeft = button[LEFT] + buttonSize / 3;
+
     float iconTop = (height - buttonSize) / 2 + buttonSize / 3;
-    float iconRight = buttonRight - buttonSize / 3;
+    float iconRight = button[RIGHT] - buttonSize / 3;
     float iconBottom = (height + buttonSize) / 2 - buttonSize / 3;
     iconOpenedDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
     iconClosedDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
@@ -333,32 +369,19 @@ public class TapBarMenu extends LinearLayout {
 
   private void setButtonPosition(float w) {
     if (buttonPosition == BUTTON_POSITION_CENTER) {
-      buttonLeft = ((w / 2) - (buttonSize / 2));
+      button[LEFT] = ((w / 2) - (buttonSize / 2));
     } else if (buttonPosition == BUTTON_POSITION_LEFT) {
-      buttonLeft = 0;
+      button[LEFT] = 0;
     } else {
-      buttonLeft = w - buttonSize;
+      button[LEFT] = w - buttonSize;
     }
     int padding = buttonMarginLeft - buttonMarginRight;
-    buttonLeft += padding;
-    buttonRight = buttonLeft + buttonSize;
-    buttonTop = (height - buttonSize) / 2;
-    buttonBottom = (height + buttonSize) / 2;
-    buttonLeftInitial = buttonLeft;
-    buttonRightInitial = buttonRight;
-  }
-
-  private void updateAnimatorsListeners() {
-    leftAnimator.removeAllUpdateListeners();
-    rightAnimator.removeAllUpdateListeners();
-    topAnimator.removeAllUpdateListeners();
-    bottomAnimator.removeAllUpdateListeners();
-    radiusAnimator.removeAllUpdateListeners();
-    leftAnimator.addUpdateListener(leftAnimatorUpdateListener);
-    rightAnimator.addUpdateListener(rightAnimatorUpdateListener);
-    topAnimator.addUpdateListener(topAnimatorUpdateListener);
-    bottomAnimator.addUpdateListener(bottomAnimatorUpdateListener);
-    radiusAnimator.addUpdateListener(radiusAnimatorUpdateListener);
+    button[LEFT] += padding;
+    button[RIGHT] = button[LEFT] + buttonSize;
+    button[TOP] = (height - buttonSize) / 2;
+    button[BOTTOM] = (height + buttonSize) / 2;
+    buttonLeftInitial = button[LEFT];
+    buttonRightInitial = button[RIGHT];
   }
 
   private void showIcons(final boolean show) {
@@ -476,48 +499,11 @@ public class TapBarMenu extends LinearLayout {
   private void onDestroy() {
     iconOpenedDrawable = null;
     iconClosedDrawable = null;
-    leftAnimator = null;
-    rightAnimator = null;
-    radiusAnimator = null;
-    topAnimator = null;
-    bottomAnimator = null;
-    animatorSet = null;
-    leftAnimatorUpdateListener = null;
-    rightAnimatorUpdateListener = null;
-    radiusAnimatorUpdateListener = null;
-    topAnimatorUpdateListener = null;
-    bottomAnimatorUpdateListener = null;
+    for ( int i = 0 ; i < 5 ; i ++ ){
+      animator[i] = null;
+    }
+    animator = null;
+    button = null;
     onClickListener = null;
   }
-
-  private ValueAnimator.AnimatorUpdateListener leftAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-    @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
-      buttonLeft = (float) valueAnimator.getAnimatedValue();
-    }
-  };
-
-  private ValueAnimator.AnimatorUpdateListener rightAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-    @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
-      buttonRight = (float) valueAnimator.getAnimatedValue();
-    }
-  };
-
-  private ValueAnimator.AnimatorUpdateListener topAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-    @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
-      buttonTop = (float) valueAnimator.getAnimatedValue();
-    }
-  };
-
-  private ValueAnimator.AnimatorUpdateListener bottomAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-    @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
-      buttonBottom = (float) valueAnimator.getAnimatedValue();
-    }
-  };
-
-  private ValueAnimator.AnimatorUpdateListener radiusAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-    @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
-      radius = (float) valueAnimator.getAnimatedValue();
-      invalidate();
-    }
-  };
 }
