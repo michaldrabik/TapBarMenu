@@ -1,6 +1,5 @@
 package com.michaldrabik.tapbarmenulib;
 
-import android.util.Log;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -50,8 +49,7 @@ public class TapBarMenu extends LinearLayout {
   private static final int BOTTOM = 3;
   private static final int RADIUS = 4;
 
-  AnimatorSet animatorSet = new AnimatorSet();
-
+  private AnimatorSet animatorSet = new AnimatorSet();
   private ValueAnimator[] animator = new ValueAnimator[5];
   private float [] button = new float[5];
 
@@ -63,9 +61,9 @@ public class TapBarMenu extends LinearLayout {
   private float buttonLeftInitial;
   private float buttonRightInitial;
   private float yPosition;
-  private OnClickListener onClickListener;
   private Drawable iconOpenedDrawable;
   private Drawable iconClosedDrawable;
+  private OnClickListener onClickListener;
 
   //Custom XML Attributes
   private int backgroundColor;
@@ -121,8 +119,9 @@ public class TapBarMenu extends LinearLayout {
   }
 
   private void setupAnimators() {
-    for ( int i = 0 ; i < 5 ; i++ )
+    for ( int i = 0 ; i < 5 ; i++ ) {
       animator[i] = new ValueAnimator();
+    }
 
     animator[LEFT].addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override
@@ -155,9 +154,7 @@ public class TapBarMenu extends LinearLayout {
         invalidate();
       }
     });
-
     animationDuration = getResources().getInteger(R.integer.animationDuration);
-
     animatorSet.setDuration(animationDuration);
     animatorSet.setInterpolator(DECELERATE_INTERPOLATOR);
     animatorSet.playTogether(animator);
@@ -367,13 +364,13 @@ public class TapBarMenu extends LinearLayout {
     iconClosedDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
   }
 
-  private void setButtonPosition(float w) {
+  private void setButtonPosition(float width) {
     if (buttonPosition == BUTTON_POSITION_CENTER) {
-      button[LEFT] = ((w / 2) - (buttonSize / 2));
+      button[LEFT] = ((width / 2) - (buttonSize / 2));
     } else if (buttonPosition == BUTTON_POSITION_LEFT) {
       button[LEFT] = 0;
     } else {
-      button[LEFT] = w - buttonSize;
+      button[LEFT] = width - buttonSize;
     }
     int padding = buttonMarginLeft - buttonMarginRight;
     button[LEFT] += padding;
