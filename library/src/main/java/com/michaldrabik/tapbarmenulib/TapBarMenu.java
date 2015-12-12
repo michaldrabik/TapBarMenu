@@ -353,9 +353,11 @@ public class TapBarMenu extends LinearLayout {
   private void updateDimensions(float w, float h) {
     width = w;
     height = h;
+    
     button[RADIUS] = buttonSize;
     setButtonPosition(width);
     float iconLeft = button[LEFT] + buttonSize / 3;
+
     float iconTop = (height - buttonSize) / 2 + buttonSize / 3;
     float iconRight = button[RIGHT] - buttonSize / 3;
     float iconBottom = (height + buttonSize) / 2 - buttonSize / 3;
@@ -472,6 +474,10 @@ public class TapBarMenu extends LinearLayout {
     path.rLineTo(0, -heightMinusCorners);
     path.close();
     return path;
+  }
+
+  @Override public boolean onInterceptTouchEvent(MotionEvent event) {
+    return (event.getX() > buttonLeftInitial && event.getX() < buttonRightInitial);
   }
 
   @Override public boolean onTouchEvent(@NonNull MotionEvent event) {

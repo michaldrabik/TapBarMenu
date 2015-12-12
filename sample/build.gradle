@@ -9,8 +9,8 @@ android {
     applicationId "com.michaldrabik.tapbarmenu"
     minSdkVersion 16
     targetSdkVersion 23
-    versionCode 3
-    versionName "1.0.2"
+    versionCode 4
+    versionName "1.0.3"
     generatedDensities = []
   }
   buildTypes {
