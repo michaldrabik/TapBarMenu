@@ -353,7 +353,7 @@ public class TapBarMenu extends LinearLayout {
   private void updateDimensions(float w, float h) {
     width = w;
     height = h;
-    
+
     button[RADIUS] = buttonSize;
     setButtonPosition(width);
     float iconLeft = button[LEFT] + buttonSize / 3;
@@ -497,11 +497,11 @@ public class TapBarMenu extends LinearLayout {
   private void onDestroy() {
     iconOpenedDrawable = null;
     iconClosedDrawable = null;
-    animator[LEFT] = null;
-    animator[RIGHT] = null;
-    animator[RADIUS] = null;
-    animator[TOP] = null;
-    animator[BOTTOM] = null;
+    for ( int i = 0 ; i < 5 ; i ++ ){
+      animator[i] = null;
+    }
+    animator = null;
+    button = null;
     onClickListener = null;
   }
 }
