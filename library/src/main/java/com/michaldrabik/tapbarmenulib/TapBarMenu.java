@@ -1,5 +1,7 @@
 package com.michaldrabik.tapbarmenulib;
 
+
+import android.util.Log;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -50,7 +52,6 @@ public class TapBarMenu extends LinearLayout {
   private ValueAnimator topAnimator;
   private ValueAnimator bottomAnimator;
   private ValueAnimator radiusAnimator;
-  private AnimatorSet animatorSet;
   private int animationDuration;
   private float width;
   private float height;
@@ -86,6 +87,7 @@ public class TapBarMenu extends LinearLayout {
   }
 
   private void init(AttributeSet attrs) {
+    Log.i("TAG", "INIT DEL TAB BAR MENU");
     setWillNotDraw(false);
     setupAttributes(attrs);
     setGravity(Gravity.CENTER);
@@ -126,9 +128,7 @@ public class TapBarMenu extends LinearLayout {
     bottomAnimator = new ValueAnimator();
     radiusAnimator = new ValueAnimator();
     animationDuration = getResources().getInteger(R.integer.animationDuration);
-    animatorSet = new AnimatorSet();
-    animatorSet.setDuration(animationDuration);
-    animatorSet.setInterpolator(DECELERATE_INTERPOLATOR);
+    updateAnimatorsListeners();
   }
 
   private void setupMenuItems() {
@@ -165,13 +165,15 @@ public class TapBarMenu extends LinearLayout {
   public void open() {
     state = State.OPENED;
     showIcons(true);
-    leftAnimator = ValueAnimator.ofFloat(buttonLeft, 0);
-    rightAnimator = ValueAnimator.ofFloat(buttonRight, width);
-    radiusAnimator = ValueAnimator.ofFloat(radius, 0);
-    topAnimator = ValueAnimator.ofFloat(buttonTop, 0);
-    bottomAnimator = ValueAnimator.ofFloat(buttonBottom, height);
-    updateAnimatorsListeners();
+    leftAnimator.setFloatValues(buttonLeft, 0);
+    rightAnimator.setFloatValues(buttonRight, width);
+    radiusAnimator.setFloatValues(radius, 0);
+    topAnimator.setFloatValues(buttonTop, 0);
+    bottomAnimator.setFloatValues(buttonBottom, height);
 
+    AnimatorSet animatorSet = new AnimatorSet();
+    animatorSet.setDuration(animationDuration);
+    animatorSet.setInterpolator(DECELERATE_INTERPOLATOR);
     animatorSet.playTogether(radiusAnimator, leftAnimator, rightAnimator, topAnimator, bottomAnimator);
     animatorSet.start();
     ((Animatable) iconOpenedDrawable).start();
@@ -190,18 +192,24 @@ public class TapBarMenu extends LinearLayout {
     updateDimensions(width, height);
     state = State.CLOSED;
     showIcons(false);
-    leftAnimator = ValueAnimator.ofFloat(0, buttonLeft);
-    rightAnimator = ValueAnimator.ofFloat(width, buttonRight);
-    radiusAnimator = ValueAnimator.ofFloat(0, radius);
-    topAnimator = ValueAnimator.ofFloat(0, buttonTop);
-    bottomAnimator = ValueAnimator.ofFloat(height, buttonBottom);
-    updateAnimatorsListeners();
+    leftAnimator.setFloatValues(0, buttonLeft);
+    rightAnimator.setFloatValues(width, buttonRight);
+    radiusAnimator.setFloatValues(0, radius);
+    topAnimator.setFloatValues(0, buttonTop);
+    bottomAnimator.setFloatValues(height, buttonBottom);
 
+    AnimatorSet animatorSet = new AnimatorSet();
+    animatorSet.setDuration(animationDuration);
+    animatorSet.setInterpolator(DECELERATE_INTERPOLATOR);
     animatorSet.playTogether(radiusAnimator, leftAnimator, rightAnimator, topAnimator, bottomAnimator);
     animatorSet.removeAllListeners();
     animatorSet.start();
     ((Animatable) iconClosedDrawable).start();
-    this.animate().y(yPosition).setDuration(animationDuration).setInterpolator(DECELERATE_INTERPOLATOR).start();
+    this.animate()
+            .y(yPosition)
+            .setDuration(animationDuration)
+            .setInterpolator(DECELERATE_INTERPOLATOR)
+            .start();
   }
 
   /**
@@ -477,7 +485,6 @@ public class TapBarMenu extends LinearLayout {
     radiusAnimator = null;
     topAnimator = null;
     bottomAnimator = null;
-    animatorSet = null;
     leftAnimatorUpdateListener = null;
     rightAnimatorUpdateListener = null;
     radiusAnimatorUpdateListener = null;
