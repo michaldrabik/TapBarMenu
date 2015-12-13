@@ -53,6 +53,7 @@ public class TapBarMenu extends LinearLayout {
   private ValueAnimator[] animator = new ValueAnimator[5];
   private float [] button = new float[5];
 
+  private Path path = new Path();
   private State state = State.CLOSED;
   private Paint paint;
   private int animationDuration;
@@ -409,16 +410,17 @@ public class TapBarMenu extends LinearLayout {
   }
 
   private Path createRoundedRectPath(float left, float top, float right, float bottom, float rx, float ry, boolean conformToOriginalPost) {
+    path.reset();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      return createRoundedRectPathApi21(left, top, right, bottom, rx, ry, conformToOriginalPost);
+      return createRoundedRectPathApi21(path, left, top, right, bottom, rx, ry, conformToOriginalPost);
     } else {
-      return createRoundedRectPathPreApi21(left, top, right, bottom, rx, ry, conformToOriginalPost);
+      return createRoundedRectPathPreApi21(path, left, top, right, bottom, rx, ry, conformToOriginalPost);
     }
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  private Path createRoundedRectPathApi21(float left, float top, float right, float bottom, float rx, float ry, boolean conformToOriginalPost) {
-    Path path = new Path();
+  private Path createRoundedRectPathApi21(Path path, float left, float top, float right, float bottom, float rx, float ry, boolean
+          conformToOriginalPost) {
     if (rx < 0) rx = 0;
     if (ry < 0) ry = 0;
     float width = right - left;
@@ -446,8 +448,8 @@ public class TapBarMenu extends LinearLayout {
     return path;
   }
 
-  private Path createRoundedRectPathPreApi21(float left, float top, float right, float bottom, float rx, float ry, boolean conformToOriginalPost) {
-    Path path = new Path();
+  private Path createRoundedRectPathPreApi21(Path path, float left, float top, float right, float bottom, float rx, float ry, boolean
+          conformToOriginalPost) {
     if (rx < 0) rx = 0;
     if (ry < 0) ry = 0;
     float width = right - left;
