@@ -203,7 +203,9 @@ public class TapBarMenu extends LinearLayout {
 
     animatorSet.cancel();
     animatorSet.start();
-    ((Animatable) iconOpenedDrawable).start();
+    if (iconOpenedDrawable instanceof Animatable) {
+      ((Animatable) iconOpenedDrawable).start();
+    }
     ViewGroup parentView = (ViewGroup) TapBarMenu.this.getParent();
     this.animate()
         .y(menuAnchor == MENU_ANCHOR_BOTTOM ? parentView.getBottom() - height : 0)
@@ -228,7 +230,9 @@ public class TapBarMenu extends LinearLayout {
 
     animatorSet.cancel();
     animatorSet.start();
-    ((Animatable) iconClosedDrawable).start();
+    if (iconClosedDrawable instanceof Animatable) {
+      ((Animatable) iconClosedDrawable).start();
+    }
     this.animate()
             .y(yPosition)
             .setDuration(animationDuration)
@@ -351,16 +355,22 @@ public class TapBarMenu extends LinearLayout {
   }
 
   private void updateDimensions(float w, float h) {
+    int ratio;
     width = w;
     height = h;
 
     button[RADIUS] = buttonSize;
     setButtonPosition(width);
-    float iconLeft = button[LEFT] + buttonSize / 3;
+    if (iconClosedDrawable instanceof Animatable) {
+      ratio = 3;
+    } else {
+      ratio = 5;
+    }
+    float iconLeft = button[LEFT] + buttonSize / ratio;
+    float iconTop = (height - buttonSize) / 2 + buttonSize / ratio;
 
-    float iconTop = (height - buttonSize) / 2 + buttonSize / 3;
-    float iconRight = button[RIGHT] - buttonSize / 3;
-    float iconBottom = (height + buttonSize) / 2 - buttonSize / 3;
+    float iconRight = button[RIGHT] - buttonSize / ratio;
+    float iconBottom = (height + buttonSize) / 2 - buttonSize / ratio;
     iconOpenedDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
     iconClosedDrawable.setBounds((int) iconLeft, (int) iconTop, (int) iconRight, (int) iconBottom);
   }
