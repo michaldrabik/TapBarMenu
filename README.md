@@ -17,7 +17,7 @@ Add the dependency to your `build.gradle`:
 
 ```groovy
 dependencies {
-    compile 'com.github.michaldrabik:tapbarmenu:1.0.4'
+    compile 'com.github.michaldrabik:tapbarmenu:1.0.5'
 }
 ```
 
@@ -96,7 +96,8 @@ I've been inspired by [Aaron Benjamin's](https://dribbble.com/shots/2345329-Tab-
 
 ##Versions
 
-1.0.4 - Memory optimizations, onClick listener fixes
+1.0.5 - Added Regular Drawable support
+<br>1.0.4 - Memory optimizations, onClick listener fixes
 <br>1.0.2 - You can now add custom icon via XML or code. See attributes.
 <br>1.0.1 - Pre 21 SDK bugfixes
 <br>1.0.0 - Initial release
