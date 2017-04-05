@@ -15,7 +15,7 @@ Demo 1: https://youtu.be/DjY0cTWWtao
 
 Demo 2: https://youtu.be/dWuPMN6WTOY
 
-##Install
+## Install
 Add the dependency to your `build.gradle`:
 
 ```groovy
@@ -24,7 +24,7 @@ dependencies {
 }
 ```
 
-##Use
+## Use
 
 Check sample project for a full example.
 
@@ -78,7 +78,7 @@ tapBarMenu.setOnClickListener(new View.OnClickListener() {
 
 *Note: TapBarMenu will always expand to its parent width. You can choose between 2 anchors `bottom` or `top` - see attributes below.*
 
-##Customize
+## Customize
 All available XML parameters are listed below:
 
 | Attribute     | Format         | Description  |
@@ -93,11 +93,11 @@ All available XML parameters are listed below:
 | app:tbm_iconClosed|drawable|Custom icon for closed state. Must be an animated vector drawable.<br>*Default: Menu icon*|
 | app:tbm_menuAnchor|top, bottom|Where menu should expand.<br>*Default: bottom*|
 
-##Kudos
+## Kudos
 
 I've been inspired by [Aaron Benjamin's](https://dribbble.com/shots/2345329-Tab-Bar-Animation) great design.
 
-##Versions
+## Versions
 
 1.0.5 - Added Regular Drawable support
 <br>1.0.4 - Memory optimizations, onClick listener fixes
@@ -105,7 +105,7 @@ I've been inspired by [Aaron Benjamin's](https://dribbble.com/shots/2345329-Tab-
 <br>1.0.1 - Pre 21 SDK bugfixes
 <br>1.0.0 - Initial release
 
-##License
+## License
 
     Copyright (C) 2015 Michal Drabik
 
