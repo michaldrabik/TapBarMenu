@@ -3,12 +3,11 @@ apply plugin: 'com.android.application'
 android {
   signingConfigs {
   }
-  compileSdkVersion 23
-  buildToolsVersion "23.0.2"
+  compileSdkVersion 28
   defaultConfig {
     applicationId "com.michaldrabik.tapbarmenu"
     minSdkVersion 16
-    targetSdkVersion 23
+    targetSdkVersion 28
     versionCode 5
     versionName "1.0.4"
     generatedDensities = []
@@ -19,12 +18,18 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 
 dependencies {
-  compile fileTree(include: ['*.jar'], dir: 'libs')
-  testCompile 'junit:junit:4.12'
-  compile 'com.android.support:appcompat-v7:23.1.1'
-  compile 'com.jakewharton:butterknife:7.0.1'
-  compile 'com.github.michaldrabik:tapbarmenu:1.0.5'
+  implementation fileTree(include: ['*.jar'], dir: 'libs')
+  implementation 'androidx.appcompat:appcompat:1.0.2'
+  implementation 'com.github.michaldrabik:tapbarmenu:1.0.5'
+  implementation 'com.jakewharton:butterknife:10.0.0'
+  annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+
+  testImplementation 'junit:junit:4.12'
 }

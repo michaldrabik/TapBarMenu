@@ -1,17 +1,19 @@
 package com.michaldrabik.tapbarmenu;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import butterknife.Bind;
+
+import com.michaldrabik.tapbarmenulib.TapBarMenu;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.michaldrabik.tapbarmenulib.TapBarMenu;
 
 public class MainActivity extends AppCompatActivity {
 
-  @Bind(R.id.tapBarMenu) TapBarMenu tapBarMenu;
+  @BindView(R.id.tapBarMenu) TapBarMenu tapBarMenu;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -19,11 +21,13 @@ public class MainActivity extends AppCompatActivity {
     ButterKnife.bind(this);
   }
 
-  @OnClick(R.id.tapBarMenu) public void onMenuButtonClick() {
+  @OnClick(R.id.tapBarMenu)
+  public void onMenuButtonClick() {
     tapBarMenu.toggle();
   }
 
-  @OnClick({ R.id.item1, R.id.item2, R.id.item3, R.id.item4 }) public void onMenuItemClick(View view) {
+  @OnClick({ R.id.item1, R.id.item2, R.id.item3, R.id.item4 })
+  public void onMenuItemClick(View view) {
     tapBarMenu.close();
     switch (view.getId()) {
       case R.id.item1:
