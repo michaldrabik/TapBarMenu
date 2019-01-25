@@ -346,7 +346,7 @@ public class TapBarMenu extends LinearLayout {
   }
 
   @Override protected void onDraw(Canvas canvas) {
-    canvas.drawPath(createRoundedRectPath(button[LEFT], button[TOP], button[RIGHT], button[BOTTOM], button[RADIUS], button[RADIUS], false), paint);
+    canvas.drawPath(createRoundedRectPath(button[LEFT], button[TOP], button[RIGHT], button[BOTTOM], button[RADIUS], button[RADIUS]), paint);
     if (state == State.CLOSED) {
       iconClosedDrawable.draw(canvas);
     } else {
@@ -419,18 +419,17 @@ public class TapBarMenu extends LinearLayout {
     }
   }
 
-  private Path createRoundedRectPath(float left, float top, float right, float bottom, float rx, float ry, boolean conformToOriginalPost) {
+  private Path createRoundedRectPath(float left, float top, float right, float bottom, float rx, float ry) {
     path.reset();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      return createRoundedRectPathApi21(path, left, top, right, bottom, rx, ry, conformToOriginalPost);
+      return createRoundedRectPathApi21(path, left, top, right, bottom, rx, ry);
     } else {
-      return createRoundedRectPathPreApi21(path, left, top, right, bottom, rx, ry, conformToOriginalPost);
+      return createRoundedRectPathPreApi21(path, left, top, right, bottom, rx, ry);
     }
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  private Path createRoundedRectPathApi21(Path path, float left, float top, float right, float bottom, float rx, float ry, boolean
-          conformToOriginalPost) {
+  private Path createRoundedRectPathApi21(Path path, float left, float top, float right, float bottom, float rx, float ry) {
     if (rx < 0) rx = 0;
     if (ry < 0) ry = 0;
     float width = right - left;
@@ -444,22 +443,15 @@ public class TapBarMenu extends LinearLayout {
     path.rLineTo(-widthMinusCorners, 0);
     path.arcTo(left, top, left + 2 * rx, top + 2 * ry, 270, -90, false);
     path.rLineTo(0, heightMinusCorners);
-    if (conformToOriginalPost) {
-      path.rLineTo(0, ry);
-      path.rLineTo(width, 0);
-      path.rLineTo(0, -ry);
-    } else {
-      path.arcTo(left, bottom - 2 * ry, left + 2 * rx, bottom, 180, -90, false);
-      path.rLineTo(widthMinusCorners, 0);
-      path.arcTo(right - 2 * rx, bottom - 2 * ry, right, bottom, 90, -90, false);
-    }
+    path.arcTo(left, bottom - 2 * ry, left + 2 * rx, bottom, 180, -90, false);
+    path.rLineTo(widthMinusCorners, 0);
+    path.arcTo(right - 2 * rx, bottom - 2 * ry, right, bottom, 90, -90, false);
     path.rLineTo(0, -heightMinusCorners);
     path.close();
     return path;
   }
 
-  private Path createRoundedRectPathPreApi21(Path path, float left, float top, float right, float bottom, float rx, float ry, boolean
-          conformToOriginalPost) {
+  private Path createRoundedRectPathPreApi21(Path path, float left, float top, float right, float bottom, float rx, float ry) {
     if (rx < 0) rx = 0;
     if (ry < 0) ry = 0;
     float width = right - left;
@@ -473,15 +465,9 @@ public class TapBarMenu extends LinearLayout {
     path.rLineTo(-widthMinusCorners, 0);
     path.rQuadTo(-rx, 0, -rx, ry);
     path.rLineTo(0, heightMinusCorners);
-    if (conformToOriginalPost) {
-      path.rLineTo(0, ry);
-      path.rLineTo(width, 0);
-      path.rLineTo(0, -ry);
-    } else {
-      path.rQuadTo(0, ry, rx, ry);
-      path.rLineTo(widthMinusCorners, 0);
-      path.rQuadTo(rx, 0, rx, -ry);
-    }
+    path.rQuadTo(0, ry, rx, ry);
+    path.rLineTo(widthMinusCorners, 0);
+    path.rQuadTo(rx, 0, rx, -ry);
     path.rLineTo(0, -heightMinusCorners);
     path.close();
     return path;
