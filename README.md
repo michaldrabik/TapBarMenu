@@ -22,8 +22,8 @@ Since version **1.0.6** this library is being distributed via [JitPack](http://j
 Add it in your root build.gradle at the end of repositories:
 ```groovy
 allprojects {
-    repositories {
-	    ...
+	repositories {
+		...
 		maven { url 'https://jitpack.io' }
 	}
 }
@@ -33,10 +33,10 @@ allprojects {
 Add the dependency:
 ```groovy
 dependencies {
-    implementation 'com.github.michaldrabik:TapBarMenu:1.0.6'
+	implementation 'com.github.michaldrabik:TapBarMenu:1.0.6'
 }
 ```
-
+---
 For versions **1.0.5** and older:
 
 Add the dependency to your `build.gradle`:
