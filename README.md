@@ -16,6 +16,29 @@ Demo 1: https://youtu.be/DjY0cTWWtao
 Demo 2: https://youtu.be/dWuPMN6WTOY
 
 ## Install
+Since version **1.0.6** this library is being distributed via [JitPack](http://jitpack.io/)
+
+**Step 1:**  
+Add it in your root build.gradle at the end of repositories:
+```groovy
+allprojects {
+    repositories {
+	    ...
+		maven { url 'https://jitpack.io' }
+	}
+}
+```
+
+**Step 2:**  
+Add the dependency:
+```groovy
+dependencies {
+    implementation 'com.github.michaldrabik:TapBarMenu:1.0.6'
+}
+```
+
+For versions **1.0.5** and older:
+
 Add the dependency to your `build.gradle`:
 
 ```groovy
@@ -97,9 +120,10 @@ All available XML parameters are listed below:
 
 I've been inspired by [Aaron Benjamin's](https://dribbble.com/shots/2345329-Tab-Bar-Animation) great design.
 
-## Versions
+## Release Notes
 
-1.0.5 - Added Regular Drawable support
+1.0.6 - Update Android dependencies and migrate to JitPack
+<br>1.0.5 - Added Regular Drawable support
 <br>1.0.4 - Memory optimizations, onClick listener fixes
 <br>1.0.2 - You can now add custom icon via XML or code. See attributes.
 <br>1.0.1 - Pre 21 SDK bugfixes
@@ -107,7 +131,7 @@ I've been inspired by [Aaron Benjamin's](https://dribbble.com/shots/2345329-Tab-
 
 ## License
 
-    Copyright (C) 2015 Michal Drabik
+    Copyright (C) 2019 Michal Drabik
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
